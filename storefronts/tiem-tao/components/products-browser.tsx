@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import type { HttpTypes } from "@medusajs/types";
 import { ProductCard } from "./product-card";
 import { cn } from "@/lib/cn";
+import "./products-browser.css";
 
 // Client listing: paper category chips filter the fetched catalog in place,
 // then the paper card grid (3-up desktop, 2-up tablet, 1-up mobile).
@@ -41,7 +42,11 @@ export function ProductsBrowser({
   return (
     <div className="mt-8">
       {categories.length > 1 && (
-        <div className="flex flex-wrap gap-2">
+        // The negative inline margins mirror the page container's padding
+        // (px-4 / sm:px-6) so the row bleeds to the viewport edge: a chip row
+        // that stops short of the edge reads as broken, one that runs off it
+        // reads as scrollable.
+        <div className="tt-chip-row -mx-4 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6">
           <FilterChip active={active === null} onClick={() => setActive(null)}>
             {t("allCategories")}
           </FilterChip>
@@ -81,7 +86,9 @@ function FilterChip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "rounded-[var(--radius-button)] border px-4 py-2 text-sm font-medium transition-colors duration-200",
+        // shrink-0 keeps the chip at its intrinsic width, so a row too narrow
+        // for its chips overflows (and scrolls) instead of squeezing them.
+        "shrink-0 rounded-[var(--radius-button)] border px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200",
         active
           ? "border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--accent)]"
           : "border-[var(--hairline)] text-[var(--label-secondary)] hover:border-[var(--hairline-strong)] hover:text-[var(--label-primary)]",

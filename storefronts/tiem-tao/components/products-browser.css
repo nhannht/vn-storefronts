@@ -1,0 +1,35 @@
+/*
+  Category chip row: one line that scrolls instead of wrapping. The flex row and
+  the edge bleed live in the markup (they mirror the page container's padding);
+  this file carries what utilities cannot express - no scrollbar chrome, a focus
+  ring the overflow box does not cut, and the touch behaviour.
+
+  No scroll-snap: the chips are short and unequal, and the row overflows by tens
+  of pixels rather than by pages, so snapping would fight small nudges and settle
+  the row somewhere the user did not aim for.
+*/
+.tt-chip-row {
+  /* overflow-x clips the y axis too (a non-visible overflow on one axis forces
+     the other to auto), which would shave the 2px focus ring at its 2px offset.
+     Gutter it, then take the same space back so the row occupies exactly the
+     height it did as a plain flex line. */
+  padding-block: 8px;
+  margin-block: -8px;
+
+  /* It should read as a row, not as a scroller: no scrollbar chrome anywhere. */
+  scrollbar-width: none;
+
+  /* Tabbing to a chip that is out of view scrolls it in; land it clear of the
+     clip edge so the ring around it stays whole. */
+  scroll-padding-inline: 16px;
+
+  /* A fling that runs out of chips must not become a browser back-swipe. */
+  overscroll-behavior-x: contain;
+
+  /* Momentum is the default on iOS 13+; this is the opt-in older iOS needs. */
+  -webkit-overflow-scrolling: touch;
+}
+
+.tt-chip-row::-webkit-scrollbar {
+  display: none;
+}
