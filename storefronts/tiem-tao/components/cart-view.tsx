@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useCart } from "./cart-provider";
+import { CtaLink } from "./cta-button";
 import { formatPrice } from "@/lib/format";
 
 export function CartView() {
@@ -16,12 +17,9 @@ export function CartView() {
     return (
       <div className="rounded-[var(--radius-card)] border border-[var(--hairline)] bg-[var(--paper)] px-6 py-14 text-center">
         <p className="text-[var(--label-secondary)]">{t("empty")}</p>
-        <Link
-          href="/products"
-          className="mt-6 inline-flex rounded-[var(--radius-button)] bg-[var(--cta-fill)] px-5 py-2.5 text-sm font-semibold text-[var(--cta-label)]"
-        >
+        <CtaLink href="/products" size="sm" className="mt-6">
           {t("continue")}
-        </Link>
+        </CtaLink>
       </div>
     );
   }
@@ -114,12 +112,9 @@ export function CartView() {
             {formatPrice(subtotal, currency)}
           </span>
         </div>
-        <Link
-          href="/checkout"
-          className="mt-5 inline-flex w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--cta-fill)] px-5 py-3 text-sm font-semibold text-[var(--cta-label)] transition-transform duration-200 hover:scale-[1.02]"
-        >
+        <CtaLink href="/checkout" fullWidth className="mt-5">
           {t("checkout")}
-        </Link>
+        </CtaLink>
         <Link
           href="/products"
           className="mt-3 inline-flex w-full items-center justify-center text-sm text-[var(--label-secondary)] transition-colors duration-200 hover:text-[var(--label-primary)]"

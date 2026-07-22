@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { HttpTypes } from "@medusajs/types";
 import { useCart } from "./cart-provider";
+import { CtaButton } from "./cta-button";
 import { formatPrice } from "@/lib/format";
 import { installmentMonthly } from "@/lib/installment";
 import { cn } from "@/lib/cn";
@@ -125,19 +126,14 @@ export function PdpPurchase({ product }: { product: HttpTypes.StoreProduct }) {
       })}
 
       {/* Inline add to bag */}
-      <button
-        type="button"
-        onClick={handleAdd}
-        disabled={!canBuy}
-        className="inline-flex w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--cta-fill)] px-6 py-3.5 text-sm font-semibold text-[var(--cta-label)] transition-transform duration-200 enabled:hover:scale-[1.02] disabled:opacity-45"
-      >
+      <CtaButton onClick={handleAdd} disabled={!canBuy} fullWidth>
         {amount == null ? t("outOfStock") : buttonLabel}
-      </button>
+      </CtaButton>
 
       {/* Sticky glass buy bar: the second (and only transient-extra) glass on the PDP */}
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-4">
         <div
-          className="pointer-events-auto mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-[var(--radius-pill)] px-5 py-3 shadow-[0_10px_40px_-24px_rgba(0,0,0,0.6)]"
+          className="pointer-events-auto mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-[var(--radius-pill)] px-5 py-3 shadow-[0_10px_40px_-24px_var(--glass-shadow)]"
           style={{
             background: "var(--glass-bg)",
             border: "1px solid var(--glass-border)",
@@ -156,14 +152,14 @@ export function PdpPurchase({ product }: { product: HttpTypes.StoreProduct }) {
               </p>
             )}
           </div>
-          <button
-            type="button"
+          <CtaButton
             onClick={handleAdd}
             disabled={!canBuy}
-            className="shrink-0 rounded-[var(--radius-button)] bg-[var(--cta-fill)] px-5 py-2.5 text-sm font-semibold text-[var(--cta-label)] transition-transform duration-200 enabled:hover:scale-[1.03] disabled:opacity-45"
+            size="sm"
+            className="shrink-0"
           >
             {amount == null ? t("outOfStock") : buttonLabel}
-          </button>
+          </CtaButton>
         </div>
       </div>
     </div>

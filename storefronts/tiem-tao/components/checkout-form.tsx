@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link, useRouter } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useCart } from "./cart-provider";
+import { CtaButton, CtaLink } from "./cta-button";
 import { sdk } from "@/lib/sdk";
 import { formatPrice } from "@/lib/format";
 
@@ -59,12 +60,9 @@ export function CheckoutForm() {
     return (
       <div className="rounded-[var(--radius-card)] border border-[var(--hairline)] bg-[var(--paper)] px-6 py-14 text-center">
         <p className="text-[var(--label-secondary)]">{tCart("empty")}</p>
-        <Link
-          href="/products"
-          className="mt-6 inline-flex rounded-[var(--radius-button)] bg-[var(--cta-fill)] px-5 py-2.5 text-sm font-semibold text-[var(--cta-label)]"
-        >
+        <CtaLink href="/products" size="sm" className="mt-6">
           {tCart("continue")}
-        </Link>
+        </CtaLink>
       </div>
     );
   }
@@ -304,13 +302,14 @@ export function CheckoutForm() {
           </span>
         </div>
 
-        <button
+        <CtaButton
           type="submit"
+          fullWidth
           disabled={!codAvailable || submitting}
-          className="mt-6 inline-flex w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--cta-fill)] px-5 py-3 text-sm font-semibold text-[var(--cta-label)] transition-transform duration-200 enabled:hover:scale-[1.02] disabled:opacity-45"
+          className="mt-6"
         >
           {submitting ? t("placing") : t("placeOrder")}
-        </button>
+        </CtaButton>
       </aside>
     </form>
   );
