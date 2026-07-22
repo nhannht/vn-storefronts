@@ -28,5 +28,23 @@ module.exports = defineConfig({
         },
       },
     },
+    {
+      // The Payment module always registers the built-in system provider
+      // (pp_system_default), used for COD in the VN region. Stripe is added
+      // for the INTL region and reads its secret key from STRIPE_API_KEY.
+      resolve: '@medusajs/medusa/payment',
+      options: {
+        providers: [
+          {
+            resolve: '@medusajs/medusa/payment-stripe',
+            id: 'stripe',
+            options: {
+              apiKey: process.env.STRIPE_API_KEY,
+              webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+            },
+          },
+        ],
+      },
+    },
   ],
 })
