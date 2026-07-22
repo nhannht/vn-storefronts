@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@theme inline {
+  --font-sans: var(--font-sans);
+}
+
+@layer base {
+  html {
+    min-height: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--bg-base);
+    background-image: var(--bg-layers);
+    background-attachment: fixed;
+    color: var(--label-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Gradient lists do not interpolate: tween only base color + text. */
+    transition: background-color 300ms ease, color 300ms ease;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion: kill animation AND transition AND JS-driven springs. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,106 @@
+/*
+  Tiem Tao design tokens. Dark is the default theme and lives in :root (which
+  doubles as the no-attribute fallback). Light overrides live in the
+  :root[data-theme="light"] block. color-scheme is declared here ONCE.
+
+  Verified accent hexes + WCAG ratios are in JOB-98 / the apple-web-design
+  skill. Route ALL text through the label ladder; ad-hoc grays lose the look.
+*/
+
+:root {
+  color-scheme: dark;
+
+  /* Font stack: SF on Apple devices (system), Inter (with Vietnamese
+     diacritics) loaded via next/font elsewhere. Never ship SF Pro files. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", "Segoe UI", var(--font-inter), Inter, Roboto, sans-serif;
+
+  /* Label ladder (dark) */
+  --label-primary: #ffffff;
+  --label-secondary: rgba(255, 255, 255, 0.55);
+  --label-tertiary: rgba(255, 255, 255, 0.25);
+
+  /* Base + paper surfaces (dark) */
+  --base: #0b0b10;
+  --paper: #16161c;
+  --hairline: rgba(255, 255, 255, 0.12);
+  --hairline-strong: rgba(255, 255, 255, 0.2);
+
+  /* Champagne gold accent (dark): accent text + accent on near-black */
+  --accent: #e4c57e;
+  --accent-soft: rgba(228, 197, 126, 0.14);
+  --cta-fill: #e4c57e;
+  --cta-label: #1d1d1f;
+
+  /* Glass (dark): translucent paper backing for the floating nav pill */
+  --glass-bg: rgba(22, 22, 28, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-blur: 18px;
+  --glass-saturate: 160%;
+
+  /* Vignette behind device photos on cards (dark) */
+  --vignette: radial-gradient(
+    circle at 50% 42%,
+    rgba(228, 197, 126, 0.1),
+    rgba(255, 255, 255, 0.02) 55%,
+    transparent 72%
+  );
+
+  /* Layered page background (dark). Gradient lists do not interpolate, so a
+     theme switch cuts these cleanly and only background-color/color tween. */
+  --bg-base: #0b0b10;
+  --bg-layers:
+    radial-gradient(1200px 800px at 50% -10%, rgba(228, 197, 126, 0.1), transparent 60%),
+    radial-gradient(1000px 900px at 15% 20%, rgba(40, 44, 74, 0.55), transparent 65%),
+    radial-gradient(1100px 1000px at 85% 80%, rgba(24, 26, 46, 0.55), transparent 65%);
+
+  /* Radii family */
+  --radius-pill: 28px;
+  --radius-card: 26px;
+  --radius-button: 18px;
+
+  /* Focus ring */
+  --focus-ring: rgba(228, 197, 126, 0.7);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* Label ladder (light) */
+  --label-primary: #1d1d1f;
+  --label-secondary: rgba(29, 29, 31, 0.64);
+  --label-tertiary: rgba(29, 29, 31, 0.35);
+
+  /* Base + paper surfaces (light, Apple-silver family) */
+  --base: #f5f5f7;
+  --paper: #ffffff;
+  --hairline: rgba(0, 0, 0, 0.1);
+  --hairline-strong: rgba(0, 0, 0, 0.16);
+
+  /* Accent (light): bronze text/focus; bright gold reserved for fills */
+  --accent: #806326;
+  --accent-soft: rgba(201, 162, 74, 0.16);
+  --cta-fill: #c9a24a;
+  --cta-label: #1d1d1f;
+
+  /* Glass (light) */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-blur: 18px;
+  --glass-saturate: 160%;
+
+  --vignette: radial-gradient(
+    circle at 50% 42%,
+    rgba(201, 162, 74, 0.1),
+    rgba(0, 0, 0, 0.02) 55%,
+    transparent 72%
+  );
+
+  --bg-base: #f5f5f7;
+  --bg-layers:
+    radial-gradient(1200px 800px at 50% -10%, rgba(201, 162, 74, 0.1), transparent 60%),
+    radial-gradient(1000px 900px at 15% 20%, rgba(240, 235, 228, 0.9), transparent 65%),
+    radial-gradient(1100px 1000px at 85% 80%, rgba(245, 240, 232, 0.9), transparent 65%);
+
+  --focus-ring: rgba(128, 99, 38, 0.7);
+}
