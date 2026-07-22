@@ -4,6 +4,8 @@ import type { Locale } from "@/i18n/routing";
 import { getRegion } from "@/lib/region";
 import { listProducts } from "@/lib/medusa";
 import { ProductCard } from "@/components/product-card";
+import { OrbHero } from "@/components/orb-hero";
+import { SpecularCta } from "@/components/specular-cta";
 
 export default async function HomePage({
   params,
@@ -24,12 +26,8 @@ export default async function HomePage({
   return (
     <div className="mx-auto max-w-6xl px-6">
       <section className="relative flex flex-col items-center overflow-hidden py-24 text-center sm:py-32">
-        {/* CSS-gradient hero for now; the WebGL Orb replaces this backdrop. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{ backgroundImage: "var(--vignette)" }}
-        />
+        {/* Signature WebGL Orb behind the hero copy. */}
+        <OrbHero />
         <p className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--accent)]">
           {t("eyebrow")}
         </p>
@@ -39,12 +37,9 @@ export default async function HomePage({
         <p className="mt-6 max-w-xl text-base leading-relaxed text-[var(--label-secondary)] sm:text-lg">
           {t("subtitle")}
         </p>
-        <Link
-          href="/products"
-          className="mt-9 inline-flex items-center rounded-[var(--radius-button)] bg-[var(--cta-fill)] px-6 py-3 text-sm font-semibold text-[var(--cta-label)] transition-transform duration-200 hover:scale-[1.03]"
-        >
-          {t("cta")}
-        </Link>
+        <div className="mt-9">
+          <SpecularCta href="/products">{t("cta")}</SpecularCta>
+        </div>
       </section>
 
       <section className="py-10">
