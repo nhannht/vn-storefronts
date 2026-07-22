@@ -13,7 +13,7 @@
     "language": "Language"
   },
   "home": {
-    "eyebrow": "A curated reseller",
+    "eyebrow": "Premium selection",
     "title": "Considered technology, delivered with trust.",
     "subtitle": "Hand-picked devices, fast nationwide delivery, and flexible 0% installments.",
     "cta": "Explore products",
@@ -24,7 +24,7 @@
   },
   "products": {
     "title": "All products",
-    "subtitle": "Prices include full manufacturer warranty coverage.",
+    "subtitle": "Prices include full warranty coverage.",
     "empty": "No products yet.",
     "from": "from"
   },
