@@ -1,5 +1,25 @@
 import { MedusaContainer } from "@medusajs/framework";
-import { seedCatalog, SeedProduct } from "./_helpers";
+import {
+  seedCatalog,
+  categorizeProducts,
+  SeedProduct,
+  SeedCategory,
+} from "./_helpers";
+
+// Device-type categories for the listing filter. English name + Vietnamese
+// label (metadata.name_vi), the same bilingual pattern as product title_vi.
+export const CATEGORIES: SeedCategory[] = [
+  { name: "Phones", name_vi: "Điện thoại" },
+  { name: "Laptops", name_vi: "Máy tính" },
+  { name: "Audio", name_vi: "Âm thanh" },
+];
+
+// Which category each product (by handle) belongs to.
+export const PRODUCT_CATEGORY: Record<string, string> = {
+  "iphone-15-pro": "Phones",
+  "macbook-air-m3-13": "Laptops",
+  "airpods-pro-2": "Audio",
+};
 
 // Tiem Tao: fictional-brand Apple reseller (luxury design system).
 // Portfolio demo. Not affiliated with Apple Inc. Product names are used
@@ -102,4 +122,5 @@ export default async function seedTiemTao({
   container: MedusaContainer;
 }) {
   await seedCatalog(container, "tiem-tao", PRODUCTS);
+  await categorizeProducts(container, CATEGORIES, PRODUCT_CATEGORY);
 }

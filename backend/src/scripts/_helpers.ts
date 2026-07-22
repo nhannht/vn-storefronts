@@ -6,6 +6,8 @@ import {
 import {
   createInventoryLevelsWorkflow,
   createProductsWorkflow,
+  createProductCategoriesWorkflow,
+  updateProductsWorkflow,
 } from "@medusajs/medusa/core-flows";
 
 // A single price line. VND is zero-decimal (amount = whole dong), USD has two
@@ -111,5 +113,76 @@ export async function seedCatalog(
 
   logger.info(
     `Seeded ${created.length} products (${skus.length} variants) into "${channelName}".`
+  );
+}
+
+// A product category. name is the canonical English label; name_vi is the
+// Vietnamese label the storefront reads from metadata (same bilingual pattern
+// as title_vi on products).
+export type SeedCategory = {
+  name: string;
+  name_vi?: string;
+};
+
+// Idempotently ensures the given categories exist (matched by name), then links
+// each product (by handle) to its category. Safe to re-run: missing categories
+// are created, existing ones reused, and the category assignment is an upsert.
+// Called after a fresh seed and by the one-off categorize script, so the live
+// catalog gains categories without a destructive reseed (which would regenerate
+// the publishable keys).
+export async function categorizeProducts(
+  container: MedusaContainer,
+  categories: SeedCategory[],
+  handleToCategory: Record<string, string>
+) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
+  const query = container.resolve(ContainerRegistrationKeys.QUERY);
+
+  const { data: existing } = await query.graph({
+    entity: "product_category",
+    fields: ["id", "name"],
+  });
+  const idByName = new Map<string, string>(
+    existing.map((c) => [c.name as string, c.id as string])
+  );
+
+  const missing = categories.filter((c) => !idByName.has(c.name));
+  if (missing.length) {
+    const { result: created } = await createProductCategoriesWorkflow(
+      container
+    ).run({
+      input: {
+        product_categories: missing.map((c) => ({
+          name: c.name,
+          is_active: true,
+          metadata: c.name_vi ? { name_vi: c.name_vi } : undefined,
+        })),
+      },
+    });
+    for (const c of created) idByName.set(c.name as string, c.id as string);
+  }
+
+  const handles = Object.keys(handleToCategory);
+  const { data: products } = await query.graph({
+    entity: "product",
+    fields: ["id", "handle"],
+    filters: { handle: handles },
+  });
+
+  const updates = products
+    .map((p) => {
+      const catId = idByName.get(handleToCategory[p.handle as string]);
+      return catId ? { id: p.id as string, category_ids: [catId] } : null;
+    })
+    .filter((u): u is { id: string; category_ids: string[] } => Boolean(u));
+
+  if (updates.length) {
+    await updateProductsWorkflow(container).run({
+      input: { products: updates },
+    });
+  }
+
+  logger.info(
+    `Categorized ${updates.length} products across ${categories.length} categories.`
   );
 }
