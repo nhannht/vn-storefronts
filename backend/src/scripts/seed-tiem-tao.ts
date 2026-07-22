@@ -25,7 +25,7 @@ export const PRODUCT_CATEGORY: Record<string, string> = {
 // Portfolio demo. Not affiliated with Apple Inc. Product names are used
 // nominatively to describe resold devices; no Apple branding or imagery is
 // used here. English lives in the core fields; Vietnamese lives in metadata.
-const PRODUCTS: SeedProduct[] = [
+export const PRODUCTS: SeedProduct[] = [
   {
     title: "iPhone 15 Pro",
     handle: "iphone-15-pro",
@@ -37,24 +37,45 @@ const PRODUCTS: SeedProduct[] = [
       description_vi:
         "Thiết kế titan, chip A17 Pro và nút Tác vụ tùy chỉnh được.",
     },
-    options: [{ title: "Color", values: ["Natural Titanium", "Blue Titanium"] }],
+    options: [
+      { title: "Color", values: ["Natural Titanium", "Blue Titanium"] },
+      { title: "Storage", values: ["256GB", "512GB"] },
+    ],
     variants: [
       {
-        title: "Natural Titanium",
-        sku: "TT-IP15P-NAT",
-        options: { Color: "Natural Titanium" },
+        title: "Natural Titanium / 256GB",
+        sku: "TT-IP15P-NAT-256",
+        options: { Color: "Natural Titanium", Storage: "256GB" },
         prices: [
           { currency_code: "vnd", amount: 28990000 },
           { currency_code: "usd", amount: 1199 },
         ],
       },
       {
-        title: "Blue Titanium",
-        sku: "TT-IP15P-BLU",
-        options: { Color: "Blue Titanium" },
+        title: "Natural Titanium / 512GB",
+        sku: "TT-IP15P-NAT-512",
+        options: { Color: "Natural Titanium", Storage: "512GB" },
+        prices: [
+          { currency_code: "vnd", amount: 34990000 },
+          { currency_code: "usd", amount: 1399 },
+        ],
+      },
+      {
+        title: "Blue Titanium / 256GB",
+        sku: "TT-IP15P-BLU-256",
+        options: { Color: "Blue Titanium", Storage: "256GB" },
         prices: [
           { currency_code: "vnd", amount: 28990000 },
           { currency_code: "usd", amount: 1199 },
+        ],
+      },
+      {
+        title: "Blue Titanium / 512GB",
+        sku: "TT-IP15P-BLU-512",
+        options: { Color: "Blue Titanium", Storage: "512GB" },
+        prices: [
+          { currency_code: "vnd", amount: 34990000 },
+          { currency_code: "usd", amount: 1399 },
         ],
       },
     ],
