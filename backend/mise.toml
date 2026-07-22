@@ -1,0 +1,8 @@
+# Pin Node to a Medusa v2-supported LTS.
+# Medusa v2 supports Node 20 through 24. The dev machine may run a newer Node
+# (for example Node 26) that Medusa v2 does not support, so the backend pins
+# Node 24 here. With mise activated in your shell, commands run inside this
+# directory use Node 24 automatically; otherwise prefix them with
+# `mise exec node@24 --`.
+[tools]
+node = "24"
