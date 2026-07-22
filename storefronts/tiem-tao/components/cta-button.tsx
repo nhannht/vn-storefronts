@@ -8,8 +8,10 @@ import { cn } from "@/lib/cn";
 // (--cta-label, 10.1:1), radius 18, semibold. Transient glass ONLY on
 // pointerdown (paper->glass while held, per the materials rule).
 
+// No outline reset here: the shared CTA takes the global :focus-visible gold
+// ring from globals.css like every other control.
 const BASE =
-  "inline-flex items-center justify-center rounded-[18px] text-sm font-semibold text-[var(--cta-label)] outline-none transition-[transform,background-color] duration-150 disabled:opacity-45 disabled:pointer-events-none";
+  "inline-flex items-center justify-center rounded-[18px] text-sm font-semibold text-[var(--cta-label)] transition-[transform,background-color] duration-150 disabled:opacity-45 disabled:pointer-events-none";
 
 const SIZES = { md: "px-6 py-3", sm: "px-5 py-2.5" } as const;
 type Size = keyof typeof SIZES;
