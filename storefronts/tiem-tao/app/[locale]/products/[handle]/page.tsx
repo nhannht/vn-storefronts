@@ -15,7 +15,9 @@ export default async function ProductPage({
 
   const t = await getTranslations("pdp");
   const region = await getRegion(locale as Locale);
-  const product = region ? await getProductByHandle(handle, region.id) : undefined;
+  const product = region
+    ? await getProductByHandle(handle, region.id)
+    : undefined;
   if (!product) notFound();
 
   // Core fields are EN; Vietnamese copy rides in metadata.
@@ -32,31 +34,48 @@ export default async function ProductPage({
   const options = product.options ?? [];
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16 pb-32">
+    <div className="mx-auto max-w-[1200px] px-4 py-16 pb-36 sm:px-6">
       <div className="grid gap-10 lg:grid-cols-2">
-        <div
-          className="grid aspect-square place-items-center overflow-hidden rounded-[var(--radius-card)] border border-[var(--hairline)]"
-          style={{ backgroundImage: "var(--vignette)" }}
-        >
-          <span
-            aria-hidden="true"
-            className="text-[8rem] font-semibold leading-none text-[var(--label-tertiary)]"
+        {/* Gallery: main 1:1 + thumbnail row (vignette placeholders until real
+            device photos land). */}
+        <div className="flex flex-col gap-4">
+          <div
+            className="grid aspect-square place-items-center overflow-hidden rounded-[var(--radius-card)] border border-[var(--hairline)] p-[12%]"
+            style={{ backgroundImage: "var(--vignette)" }}
           >
-            {initial}
-          </span>
+            <span
+              aria-hidden="true"
+              className="text-[8rem] font-semibold leading-none text-[var(--label-tertiary)]"
+            >
+              {initial}
+            </span>
+          </div>
+          <div className="grid grid-cols-4 gap-4">
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                aria-hidden="true"
+                className="aspect-square rounded-[var(--radius-button)] border border-[var(--hairline)]"
+                style={{ backgroundImage: "var(--vignette)" }}
+              />
+            ))}
+          </div>
+          {/* Buy-bar reveal trigger: the sticky buy bar appears once this
+              (the gallery's end) scrolls out of view. */}
+          <div id="tt-gallery-sentinel" aria-hidden="true" />
         </div>
 
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-[var(--label-primary)] sm:text-4xl">
+          <h1 className="text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-tight tracking-[-0.01em] text-[var(--label-primary)]">
             {title}
           </h1>
           {description && (
-            <p className="mt-4 text-base leading-relaxed text-[var(--label-secondary)]">
+            <p className="mt-4 text-[1.0625rem] leading-relaxed text-[var(--label-secondary)]">
               {description}
             </p>
           )}
           <div className="mt-8">
-            <PdpPurchase product={product} />
+            <PdpPurchase product={product} title={title ?? ""} />
           </div>
         </div>
       </div>
