@@ -1,0 +1,138 @@
+"use client";
+
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
+import { ThemeToggle } from "./theme-toggle";
+import { LocaleSwitch } from "./locale-switch";
+import { cn } from "@/lib/cn";
+
+// The one persistent glass surface per view: a floating frosted pill.
+// (react-bits GlassSurface adds SVG refraction on top of this baseline.)
+const glassStyle: React.CSSProperties = {
+  background: "var(--glass-bg)",
+  border: "1px solid var(--glass-border)",
+  backdropFilter: "blur(var(--glass-blur)) saturate(var(--glass-saturate))",
+  WebkitBackdropFilter: "blur(var(--glass-blur)) saturate(var(--glass-saturate))",
+};
+
+export function Nav() {
+  const t = useTranslations("nav");
+  const brand = useTranslations("brand");
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  const links = [
+    { href: "/", label: t("home") },
+    { href: "/products", label: t("products") },
+  ];
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  return (
+    <header className="sticky top-0 z-50 px-4 pt-4">
+      <nav
+        aria-label="Primary"
+        style={glassStyle}
+        className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-[var(--radius-pill)] px-5 py-3 shadow-[0_10px_40px_-24px_rgba(0,0,0,0.6)]"
+      >
+        <Link
+          href="/"
+          className="text-lg font-semibold tracking-tight text-[var(--label-primary)]"
+        >
+          {brand("name")}
+        </Link>
+
+        <div className="hidden items-center gap-7 md:flex">
+          {links.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={cn(
+                "text-sm transition-colors duration-200",
+                isActive(l.href)
+                  ? "text-[var(--label-primary)]"
+                  : "text-[var(--label-secondary)] hover:text-[var(--label-primary)]",
+              )}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="hidden items-center gap-3 md:flex">
+          <LocaleSwitch />
+          <ThemeToggle />
+          <Link
+            href="/cart"
+            className="text-sm text-[var(--label-secondary)] transition-colors duration-200 hover:text-[var(--label-primary)]"
+          >
+            {t("cart")}
+          </Link>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-label={open ? t("closeMenu") : t("openMenu")}
+          className="grid size-9 place-items-center rounded-full border border-[var(--hairline)] text-[var(--label-secondary)] md:hidden"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            {open ? (
+              <path
+                d="M6 6l12 12M18 6L6 18"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+              />
+            ) : (
+              <path
+                d="M4 7h16M4 12h16M4 17h16"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+              />
+            )}
+          </svg>
+        </button>
+      </nav>
+
+      {open && (
+        <div
+          className="mx-auto mt-2 max-w-6xl rounded-[var(--radius-card)] border border-[var(--hairline)] bg-[var(--paper)] p-4 md:hidden"
+        >
+          <div className="flex flex-col gap-1">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "rounded-[var(--radius-button)] px-3 py-2.5 text-sm",
+                  isActive(l.href)
+                    ? "bg-[var(--accent-soft)] text-[var(--label-primary)]"
+                    : "text-[var(--label-secondary)]",
+                )}
+              >
+                {l.label}
+              </Link>
+            ))}
+            <Link
+              href="/cart"
+              onClick={() => setOpen(false)}
+              className="rounded-[var(--radius-button)] px-3 py-2.5 text-sm text-[var(--label-secondary)]"
+            >
+              {t("cart")}
+            </Link>
+          </div>
+          <div className="mt-3 flex items-center justify-between border-t border-[var(--hairline)] pt-3">
+            <LocaleSwitch />
+            <ThemeToggle />
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
