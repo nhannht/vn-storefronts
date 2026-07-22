@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ThemeToggle } from "./theme-toggle";
 import { LocaleSwitch } from "./locale-switch";
 import { useCart } from "./cart-provider";
+import { useMobileMenu } from "./ui-state";
 import { cn } from "@/lib/cn";
 
 // The one persistent glass surface per view: a floating frosted pill.
@@ -22,7 +22,7 @@ export function Nav() {
   const brand = useTranslations("brand");
   const pathname = usePathname();
   const { count } = useCart();
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useMobileMenu();
 
   const links = [
     { href: "/", label: t("home") },
@@ -108,7 +108,7 @@ export function Nav() {
 
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-label={open ? t("closeMenu") : t("openMenu")}
           className="grid size-9 place-items-center rounded-full border border-[var(--hairline)] text-[var(--label-secondary)] md:hidden"

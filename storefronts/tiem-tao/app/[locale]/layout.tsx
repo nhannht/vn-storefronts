@@ -8,6 +8,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { getRegion } from "@/lib/region";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/components/cart-provider";
+import { MobileMenuProvider } from "@/components/ui-state";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 
@@ -52,9 +53,11 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           <ThemeProvider>
             <CartProvider regionId={region?.id}>
-              <Nav />
-              <main className="flex-1">{children}</main>
-              <Footer />
+              <MobileMenuProvider>
+                <Nav />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </MobileMenuProvider>
             </CartProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
