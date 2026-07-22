@@ -2,8 +2,34 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { Locale } from "@/i18n/routing";
 import { getRegion } from "@/lib/region";
-import { getProductByHandle } from "@/lib/medusa";
+import { getProductByHandle, listProducts } from "@/lib/medusa";
 import { PdpPurchase } from "@/components/pdp-purchase";
+
+// The catalog is build-time frozen everywhere else - /products is already SSG -
+// so the PDP is frozen too rather than being the one page that phones the
+// backend on every request. The parent [locale] segment generates its params
+// first, so this runs once per locale and asks that locale's region which
+// products it actually sells.
+export async function generateStaticParams({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const region = await getRegion(params.locale as Locale);
+  if (!region) return [];
+  const products = await listProducts(region.id);
+  return products.map((product) => ({ handle: product.handle }));
+}
+
+// This is what makes a bad handle answer correctly, and it is the whole reason
+// the route was frozen. Left at its default (true), an unknown handle renders on
+// demand and hits the notFound() below WHILE React is streaming HTML; the server
+// renderer has no error-boundary recovery mid-stream, so Next abandons the
+// stream, answers with a blank <html id="__next_error__"> shell, and the panel is
+// rebuilt on the client from the flight payload. Turned off, an unknown handle
+// never reaches this component at all: the router rejects the param and takes
+// the route-level 404 path, which renders as real server HTML.
+export const dynamicParams = false;
 
 export default async function ProductPage({
   params,
