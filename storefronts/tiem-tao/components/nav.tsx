@@ -80,6 +80,32 @@ export function Nav() {
           </Link>
         </div>
 
+        <Link
+          href="/cart"
+          aria-label={t("cart")}
+          className="relative grid size-9 place-items-center rounded-full border border-[var(--hairline)] text-[var(--label-secondary)] md:hidden"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M6 8h12l-1 12H7L6 8z"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M9 8V6.5a3 3 0 0 1 6 0V8"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+            />
+          </svg>
+          {count > 0 && (
+            <span className="absolute -right-1 -top-1 grid min-w-4 place-items-center rounded-full bg-[var(--cta-fill)] px-1 text-[10px] font-semibold text-[var(--cta-label)]">
+              {count}
+            </span>
+          )}
+        </Link>
+
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
