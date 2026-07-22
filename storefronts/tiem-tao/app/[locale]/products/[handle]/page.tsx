@@ -3,7 +3,12 @@ import { notFound } from "next/navigation";
 import type { Locale } from "@/i18n/routing";
 import { getRegion } from "@/lib/region";
 import { getProductByHandle, listProducts } from "@/lib/medusa";
-import { PdpPurchase } from "@/components/pdp-purchase";
+import { axisLabel } from "@/lib/product-view";
+import {
+  PdpBuyBar,
+  PdpPurchasePanel,
+  PdpPurchaseProvider,
+} from "@/components/pdp-purchase";
 
 // The catalog is build-time frozen everywhere else - /products is already SSG -
 // so the PDP is frozen too rather than being the one page that phones the
@@ -59,8 +64,12 @@ export default async function ProductPage({
   const initial = title?.trim().charAt(0) ?? "";
   const options = product.options ?? [];
 
+  // The provider renders no markup of its own: it only lets the purchase panel
+  // and the sticky buy bar, which sit at different depths of this layout, share
+  // one selection. The bar's depth is load-bearing - see PdpBuyBar.
   return (
-    <div className="mx-auto max-w-[1200px] px-4 py-16 pb-36 sm:px-6">
+    <PdpPurchaseProvider product={product}>
+    <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
       <div className="grid gap-10 lg:grid-cols-2">
         {/* Gallery: main 1:1 + thumbnail row (vignette placeholders until real
             device photos land). */}
@@ -98,7 +107,7 @@ export default async function ProductPage({
             </p>
           )}
           <div className="mt-8">
-            <PdpPurchase product={product} title={title ?? ""} />
+            <PdpPurchasePanel />
           </div>
         </div>
       </div>
@@ -109,18 +118,7 @@ export default async function ProductPage({
             {t("specs")}
           </h2>
           <dl className="mt-5 overflow-hidden rounded-[var(--radius-card)] border border-[var(--hairline)] bg-[var(--paper)]">
-            {options.map((option, i) => {
-              // Localize the axis label through the same path as the variant
-              // controls (EN core field -> vi label); unmapped axes keep their
-              // core title.
-              const key = option.title?.toLowerCase();
-              const label =
-                key === "storage"
-                  ? t("storage")
-                  : key === "color"
-                    ? t("color")
-                    : option.title;
-              return (
+            {options.map((option, i) => (
               <div
                 key={option.id}
                 className={
@@ -130,7 +128,7 @@ export default async function ProductPage({
                 }
               >
                 <dt className="w-32 shrink-0 text-sm text-[var(--label-tertiary)]">
-                  {label}
+                  {axisLabel(t, option.title)}
                 </dt>
                 <dd className="text-sm text-[var(--label-primary)]">
                   {Array.from(
@@ -138,11 +136,15 @@ export default async function ProductPage({
                   ).join(", ")}
                 </dd>
               </div>
-              );
-            })}
+            ))}
           </dl>
         </section>
       )}
+
+      {/* Last child of the page root on purpose: the bar is sticky, so this is
+          the box that bounds it above the footer. */}
+      <PdpBuyBar title={title ?? ""} />
     </div>
+    </PdpPurchaseProvider>
   );
 }

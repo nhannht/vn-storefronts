@@ -2,16 +2,13 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
 // Paper rest: the footer sits flat on the page, never glass.
-// The id is a stable handle for the PDP buy bar, which hides itself once this
-// element enters view. It is an id and not a tag lookup because a second
-// <footer> anywhere in the tree would silently capture querySelector("footer").
 export async function Footer() {
   const t = await getTranslations("footer");
   const brand = await getTranslations("brand");
   const nav = await getTranslations("nav");
 
   return (
-    <footer id="tt-footer" className="mt-24 border-t border-[var(--hairline)]">
+    <footer className="mt-24 border-t border-[var(--hairline)]">
       <div className="mx-auto grid max-w-[1200px] gap-10 px-4 py-14 sm:grid-cols-2 sm:px-6 md:grid-cols-3">
         <div className="max-w-xs">
           <p className="text-lg font-semibold tracking-tight text-[var(--label-primary)]">
