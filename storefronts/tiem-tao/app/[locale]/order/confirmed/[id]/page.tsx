@@ -49,12 +49,27 @@ export default async function OrderConfirmedPage({
             #{order.display_id ?? order.id}
           </span>
         </div>
-        {order.total != null && (
-          <div className="mt-2 flex items-center justify-between text-sm">
-            <span className="text-[var(--label-secondary)]">
+        {order.email && (
+          <div className="mt-2 flex items-center justify-between gap-3 text-sm">
+            <span className="shrink-0 text-[var(--label-secondary)]">
+              {t("email")}
+            </span>
+            {/* An address is a receipt fact the buyer checks, so it wraps
+                rather than truncating like the product titles elsewhere. */}
+            <span className="min-w-0 break-all text-right font-medium text-[var(--label-primary)]">
               {order.email}
             </span>
-            <span className="font-medium text-[var(--label-primary)]">
+          </div>
+        )}
+        {/* Guarded apart from the email: a missing total must not take the
+            address down with it. Emphasis matches the cart and checkout
+            totals - hairline rule above, the amount a size up. */}
+        {order.total != null && (
+          <div className="mt-4 flex items-center justify-between border-t border-[var(--hairline)] pt-4">
+            <span className="text-sm text-[var(--label-secondary)]">
+              {t("total")}
+            </span>
+            <span className="text-lg font-semibold text-[var(--label-primary)]">
               {formatPrice(order.total, order.currency_code ?? "usd")}
             </span>
           </div>
