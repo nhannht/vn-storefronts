@@ -26,7 +26,9 @@
     "title": "All products",
     "subtitle": "Prices include full warranty coverage.",
     "empty": "No products yet.",
-    "from": "from"
+    "from": "from",
+    "perMonth": "from {amount}/mo",
+    "allCategories": "All"
   },
   "pdp": {
     "addToCart": "Add to bag",

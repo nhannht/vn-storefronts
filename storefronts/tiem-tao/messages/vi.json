@@ -26,7 +26,9 @@
     "title": "Tất cả sản phẩm",
     "subtitle": "Giá đã bao gồm chính sách bảo hành đầy đủ.",
     "empty": "Chưa có sản phẩm nào.",
-    "from": "từ"
+    "from": "từ",
+    "perMonth": "từ {amount}/tháng",
+    "allCategories": "Tất cả"
   },
   "pdp": {
     "addToCart": "Thêm vào giỏ",

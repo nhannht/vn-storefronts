@@ -17,7 +17,6 @@ export default async function HomePage({
 
   const t = await getTranslations("home");
   const tp = await getTranslations("products");
-  const tpdp = await getTranslations("pdp");
 
   const region = await getRegion(locale as Locale);
   const products = region ? await listProducts(region.id) : [];
@@ -61,14 +60,9 @@ export default async function HomePage({
         </div>
 
         {featured.length > 0 ? (
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {featured.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                fromLabel={tp("from")}
-                installmentLabel={tpdp("installmentTitle")}
-              />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (

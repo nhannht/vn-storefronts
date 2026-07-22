@@ -4,7 +4,7 @@ import { sdk } from "./sdk";
 // Fields we need for cards and PDP: calculated prices, variants + options,
 // images, and the bilingual metadata (title_vi / description_vi).
 const PRODUCT_FIELDS =
-  "*variants.calculated_price,*variants.options,*options,*options.values,*images,+metadata";
+  "*variants.calculated_price,*variants.options,*options,*options.values,*images,*categories,+metadata";
 
 export async function listProducts(
   regionId: string,

@@ -1,61 +1,95 @@
+"use client";
+
 import type { HttpTypes } from "@medusajs/types";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import BorderGlow from "@/components/reactbits/BorderGlow/BorderGlow";
 import { fromAmount } from "@/lib/medusa";
 import { formatPrice } from "@/lib/format";
+import { installmentMonthly } from "@/lib/installment";
+import { localizedTitle, categoryLabel } from "@/lib/product-view";
+import "./product-card.css";
 
-// Paper rest that lifts on hover (scale + brighter hairline). The image slot is
-// an intentional gold vignette placeholder until real device photos land.
-export function ProductCard({
-  product,
-  fromLabel,
-  installmentLabel,
-}: {
-  product: HttpTypes.StoreProduct;
-  fromLabel: string;
-  installmentLabel: string;
-}) {
-  const price = fromAmount(product);
-  const initial = product.title?.trim().charAt(0) ?? "";
-  const eyebrow = product.collection?.title;
+const INSTALLMENT_MONTHS = 12;
+
+// Gold-only hover glow. BorderGlow parses these in JS (glow + mesh math), so
+// they cannot read CSS vars: keep them mirrored on tokens.css --accent /
+// --cta-fill. The mesh trio is all gold/bronze so the hover never shows the
+// component's default multi-hue border.
+const GOLD_GLOW = "42 65 69"; // #E4C57E as "H S L"
+const GOLD_MESH = ["#E4C57E", "#C9A24A", "#B8863B"];
+
+// Paper product card per the locked anatomy: 1:1 media with a per-theme vignette
+// placeholder, then eyebrow / name / price / installment-hint. The whole card is
+// one link; hover = BorderGlow + spring scale 1.02 (both killed by reduced
+// motion via globals.css).
+export function ProductCard({ product }: { product: HttpTypes.StoreProduct }) {
+  const locale = useLocale();
+  const t = useTranslations("products");
+
+  const name = localizedTitle(product, locale);
+  const eyebrow = categoryLabel(product, locale);
+  const from = fromAmount(product);
+  const initial = name.trim().charAt(0);
 
   return (
     <Link
       href={`/products/${product.handle}`}
-      className="group flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--hairline)] bg-[var(--paper)] transition-[transform,border-color] duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.02] hover:border-[var(--accent)]"
+      className="tt-card-link group"
+      aria-label={name}
     >
-      <div
-        className="relative grid aspect-square place-items-center"
-        style={{ backgroundImage: "var(--vignette)" }}
+      <BorderGlow
+        className="tt-card"
+        glowColor={GOLD_GLOW}
+        colors={GOLD_MESH}
+        backgroundColor="var(--paper)"
+        borderRadius={26}
+        glowRadius={32}
+        fillOpacity={0.22}
       >
-        <span
-          aria-hidden="true"
-          className="text-6xl font-semibold text-[var(--label-tertiary)] transition-transform duration-500 ease-out group-hover:scale-105"
+        <div
+          className="tt-card-media relative grid aspect-square place-items-center overflow-hidden p-[12%]"
+          style={{ backgroundImage: "var(--vignette)" }}
         >
-          {initial}
-        </span>
-      </div>
+          <span
+            aria-hidden="true"
+            className="text-6xl font-semibold text-[var(--label-tertiary)]"
+          >
+            {initial}
+          </span>
+        </div>
 
-      <div className="flex flex-col gap-1.5 p-5">
-        {eyebrow && (
-          <p className="text-xs uppercase tracking-widest text-[var(--label-tertiary)]">
-            {eyebrow}
-          </p>
-        )}
-        <h3 className="text-base font-medium tracking-tight text-[var(--label-primary)]">
-          {product.title}
-        </h3>
-        {price && (
-          <p className="text-sm text-[var(--label-secondary)]">
-            <span className="text-[var(--label-tertiary)]">{fromLabel} </span>
-            <span className="text-[var(--label-primary)]">
-              {formatPrice(price.amount, price.currency)}
-            </span>
-          </p>
-        )}
-        <span className="mt-2 inline-flex w-fit rounded-full bg-[var(--accent-soft)] px-2.5 py-1 text-xs font-medium text-[var(--accent)]">
-          {installmentLabel}
-        </span>
-      </div>
+        <div className="flex flex-col gap-1.5 px-5 pb-5 pt-4">
+          {eyebrow && (
+            <p className="text-[0.8125rem] font-medium uppercase tracking-[0.08em] text-[var(--label-tertiary)]">
+              {eyebrow}
+            </p>
+          )}
+          <h3 className="text-xl font-semibold tracking-tight text-[var(--label-primary)]">
+            {name}
+          </h3>
+          {from && (
+            <>
+              <p className="text-[1.0625rem] font-semibold">
+                <span className="font-normal text-[var(--label-tertiary)]">
+                  {t("from")}{" "}
+                </span>
+                <span className="text-[var(--label-primary)]">
+                  {formatPrice(from.amount, from.currency)}
+                </span>
+              </p>
+              <p className="text-[0.8125rem] text-[var(--label-tertiary)]">
+                {t("perMonth", {
+                  amount: formatPrice(
+                    installmentMonthly(from.amount, INSTALLMENT_MONTHS),
+                    from.currency,
+                  ),
+                })}
+              </p>
+            </>
+          )}
+        </div>
+      </BorderGlow>
     </Link>
   );
 }
