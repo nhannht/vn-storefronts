@@ -128,23 +128,25 @@ export function PdpPurchaseProvider({
 
   const buttonLabel = busy ? t("adding") : added ? t("added") : t("addToCart");
 
-  // The sticky buy bar reveals once the primary buy area (the inline CTA) has
-  // scrolled ABOVE the viewport - i.e. the user scrolled past the gallery/CTA
-  // hero. The `top < 0` guard distinguishes "scrolled past" from "not reached
-  // yet": on mobile the inline CTA starts below the fold (top > 0), so the bar
-  // stays hidden at the top; on desktop it hides while the CTA sits beside the
-  // gallery. (A gallery-end sentinel failed here: on desktop the tall two-column
-  // gallery never scrolls its bottom above the viewport top.)
+  // The bar exists to stand in for the inline CTA whenever the inline CTA is
+  // not on screen, so the rule is simply "is it on screen", with no regard for
+  // which edge it left by. An earlier version also required it to have gone off
+  // the TOP, which read as "only after the gallery scrolls past". That is
+  // unsatisfiable on these pages: there is less than a viewport of content
+  // between the CTA and the end of the page, so by the time it fired the bar
+  // had already released from its sticky position and drew mid-screen instead
+  // of pinned. Dropping it also fixes the case that most wants a buy bar, the
+  // phone where the CTA starts below the fold. Desktop is unaffected: the CTA
+  // sits beside the gallery and stays intersecting, so the bar never appears.
+  // (A gallery-end sentinel was tried and failed: on desktop the tall
+  // two-column gallery never scrolls its bottom above the viewport top.)
   const inlineCtaRef = useRef<HTMLDivElement>(null);
   const [barVisible, setBarVisible] = useState(false);
   useEffect(() => {
     const el = inlineCtaRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([entry]) =>
-        setBarVisible(
-          !entry.isIntersecting && entry.boundingClientRect.top < 0,
-        ),
+      ([entry]) => setBarVisible(!entry.isIntersecting),
       { threshold: 0 },
     );
     io.observe(el);
