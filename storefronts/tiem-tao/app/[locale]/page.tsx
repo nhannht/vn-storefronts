@@ -33,10 +33,12 @@ export default async function HomePage({
           the locked home rhythm - 64px mobile, 112px desktop - so there is one
           place to read it and one place to change it. */}
       <div className="flex flex-col gap-16 sm:gap-28">
-        {/* The hero's own top padding is its stage, not rhythm: it is the
-            vertical room the ambient glow needs to read as light rather than as
-            a band behind the headline. */}
-        <section className="relative flex flex-col items-center overflow-hidden pt-16 text-center sm:pt-24">
+        {/* The hero's own padding is its stage, not rhythm: it is the vertical
+            room the ambient glow needs to read as light rather than as a band
+            behind the headline. It is symmetric because the glow canvas IS this
+            section's box - cutting the bottom padding clips the falloff right
+            at the CTA and squashes the glow into an ellipse. */}
+        <section className="relative flex flex-col items-center overflow-hidden py-16 text-center sm:py-24">
           {/* Baked-noise gold ambient glow behind the hero copy. */}
           <AmbientGlow />
           <p className="text-[0.8125rem] font-medium uppercase tracking-[0.08em] text-[var(--accent)]">
