@@ -20,6 +20,7 @@
     "featuredTitle": "Nổi bật",
     "featuredSubtitle": "Vài lựa chọn được yêu thích nhất tại Tiệm Táo.",
     "categoriesTitle": "Danh mục",
+    "categoriesSubtitle": "Chọn theo dòng thiết bị.",
     "viewAll": "Xem tất cả"
   },
   "products": {
@@ -50,7 +51,9 @@
     "subtotal": "Tạm tính",
     "checkout": "Thanh toán",
     "remove": "Xoá",
-    "quantity": "Số lượng"
+    "quantity": "Số lượng",
+    "increase": "Tăng số lượng",
+    "decrease": "Giảm số lượng"
   },
   "checkout": {
     "title": "Thanh toán",
@@ -69,12 +72,18 @@
     "placing": "Đang xử lý...",
     "summary": "Đơn hàng",
     "shippingMethod": "Phương thức vận chuyển",
+    "subtotal": "Tạm tính",
+    "shippingFee": "Phí vận chuyển",
+    "shippingPending": "Phí vận chuyển được tính khi bạn đặt hàng.",
+    "total": "Tổng cộng",
     "stripeBlocked": "Thanh toán thẻ đang chờ khoá thử nghiệm Stripe của quản trị viên."
   },
   "order": {
     "confirmedTitle": "Đặt hàng thành công",
     "thanks": "Cảm ơn bạn đã mua sắm tại Tiệm Táo.",
     "orderId": "Mã đơn hàng",
+    "email": "Email",
+    "total": "Tổng cộng",
     "backHome": "Về trang chủ"
   },
   "footer": {
@@ -84,6 +93,12 @@
     "support": "Hỗ trợ",
     "warranty": "Bảo hành",
     "rights": "Dự án minh hoạ, phi thương mại."
+  },
+  "notFound": {
+    "title": "Không tìm thấy trang",
+    "body": "Trang bạn tìm không tồn tại hoặc đã được chuyển đi.",
+    "browse": "Xem sản phẩm",
+    "back": "Về trang chủ"
   },
   "common": {
     "loading": "Đang tải...",

@@ -20,6 +20,7 @@
     "featuredTitle": "Featured",
     "featuredSubtitle": "A few of the most-loved picks at Tiệm Táo.",
     "categoriesTitle": "Categories",
+    "categoriesSubtitle": "Shop by device family.",
     "viewAll": "View all"
   },
   "products": {
@@ -50,7 +51,9 @@
     "subtotal": "Subtotal",
     "checkout": "Checkout",
     "remove": "Remove",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "increase": "Increase quantity",
+    "decrease": "Decrease quantity"
   },
   "checkout": {
     "title": "Checkout",
@@ -69,12 +72,18 @@
     "placing": "Processing...",
     "summary": "Order summary",
     "shippingMethod": "Shipping method",
+    "subtotal": "Subtotal",
+    "shippingFee": "Shipping",
+    "shippingPending": "Shipping is calculated when you place the order.",
+    "total": "Total",
     "stripeBlocked": "Card payment is pending the administrator's Stripe test key."
   },
   "order": {
     "confirmedTitle": "Order confirmed",
     "thanks": "Thank you for shopping at Tiệm Táo.",
     "orderId": "Order ID",
+    "email": "Email",
+    "total": "Total",
     "backHome": "Back to home"
   },
   "footer": {
@@ -84,6 +93,12 @@
     "support": "Support",
     "warranty": "Warranty",
     "rights": "A non-commercial portfolio demo."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you are looking for does not exist or has moved.",
+    "browse": "Browse products",
+    "back": "Back to home"
   },
   "common": {
     "loading": "Loading...",
