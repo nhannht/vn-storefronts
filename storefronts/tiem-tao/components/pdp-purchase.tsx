@@ -98,9 +98,25 @@ export function PdpPurchase({
     return () => io.disconnect();
   }, []);
 
+  // The footer is the floor of the page: once any of it is on screen the bar
+  // would float on top of it, so the bar leaves the moment the footer arrives
+  // and comes back if the user scrolls away from it. Observed by id (see
+  // footer.tsx) rather than by tag name.
+  const [footerVisible, setFooterVisible] = useState(false);
+  useEffect(() => {
+    const footer = document.getElementById("tt-footer");
+    if (!footer) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setFooterVisible(entry.isIntersecting),
+      { threshold: 0 },
+    );
+    io.observe(footer);
+    return () => io.disconnect();
+  }, []);
+
   // Never two floating layers at once: the buy bar hides while the mobile nav
   // sheet is open.
-  const showBar = barVisible && !menuOpen;
+  const showBar = barVisible && !footerVisible && !menuOpen;
 
   return (
     <div className="flex flex-col gap-7">
@@ -160,7 +176,8 @@ export function PdpPurchase({
       </div>
 
       {/* Sticky glass buy bar: the second persistent glass pane on the PDP.
-          Fades and rises in once the inline CTA is out of view. */}
+          Fades and rises in once the inline CTA is out of view, and back out
+          the same way once the footer arrives. */}
       <div
         id="tt-buy-bar"
         className={
