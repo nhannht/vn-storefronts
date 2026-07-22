@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getRegion } from "@/lib/region";
 import { listProducts } from "@/lib/medusa";
-import { ProductCard } from "@/components/product-card";
+import { ProductsBrowser } from "@/components/products-browser";
 
 export default async function ProductsPage({
   params,
@@ -13,33 +13,23 @@ export default async function ProductsPage({
   setRequestLocale(locale);
 
   const t = await getTranslations("products");
-  const tpdp = await getTranslations("pdp");
 
   const region = await getRegion(locale as Locale);
   const products = region ? await listProducts(region.id) : [];
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
+    <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
       <header className="max-w-2xl">
-        <h1 className="text-3xl font-semibold tracking-tight text-[var(--label-primary)] sm:text-4xl">
+        <h1 className="text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-tight tracking-[-0.01em] text-[var(--label-primary)]">
           {t("title")}
         </h1>
-        <p className="mt-3 text-base text-[var(--label-secondary)]">
+        <p className="mt-3 text-[1.0625rem] leading-relaxed text-[var(--label-secondary)]">
           {t("subtitle")}
         </p>
       </header>
 
       {products.length > 0 ? (
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              fromLabel={t("from")}
-              installmentLabel={tpdp("installmentTitle")}
-            />
-          ))}
-        </div>
+        <ProductsBrowser products={products} />
       ) : (
         <p className="mt-10 text-sm text-[var(--label-secondary)]">{t("empty")}</p>
       )}
