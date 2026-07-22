@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useCart } from "./cart-provider";
@@ -44,6 +44,12 @@ export function CheckoutForm() {
   const [method, setMethod] = useState<"cod" | "card">(
     codAvailable ? "cod" : "card",
   );
+
+  // The cart (and thus region/currency) resolves after first paint, so select
+  // COD once it becomes available. Card stays disabled (Stripe key blocker).
+  useEffect(() => {
+    if (codAvailable) setMethod("cod");
+  }, [codAvailable]);
 
   const countryCode =
     cart?.region?.countries?.[0]?.iso_2?.toLowerCase() ??
