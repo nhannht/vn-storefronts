@@ -1,0 +1,90 @@
+{
+  "brand": {
+    "name": "Tiệm Táo",
+    "disclaimer": "Portfolio demo. Not affiliated with Apple Inc."
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "cart": "Cart",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleTheme": "Toggle light and dark",
+    "language": "Language"
+  },
+  "home": {
+    "eyebrow": "A curated reseller",
+    "title": "Considered technology, delivered with trust.",
+    "subtitle": "Hand-picked devices, fast nationwide delivery, and flexible 0% installments.",
+    "cta": "Explore products",
+    "featuredTitle": "Featured",
+    "featuredSubtitle": "A few of the most-loved picks at Tiệm Táo.",
+    "categoriesTitle": "Categories",
+    "viewAll": "View all"
+  },
+  "products": {
+    "title": "All products",
+    "subtitle": "Prices include full manufacturer warranty coverage.",
+    "empty": "No products yet.",
+    "from": "from"
+  },
+  "pdp": {
+    "addToCart": "Add to bag",
+    "adding": "Adding...",
+    "added": "Added to bag",
+    "storage": "Storage",
+    "color": "Color",
+    "specs": "Specifications",
+    "installmentTitle": "0% installments",
+    "installmentValue": "{amount}/mo for {months} months",
+    "installmentNote": "Presentational demo UI only. Not a real financing offer.",
+    "selectVariant": "Select a variant",
+    "outOfStock": "Out of stock"
+  },
+  "cart": {
+    "title": "Your bag",
+    "empty": "Your bag is empty.",
+    "continue": "Continue shopping",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "quantity": "Quantity"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "contact": "Contact information",
+    "email": "Email",
+    "shipping": "Shipping address",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "address": "Address",
+    "city": "City",
+    "phone": "Phone",
+    "payment": "Payment method",
+    "cod": "Cash on delivery (COD)",
+    "card": "Card (Stripe test)",
+    "placeOrder": "Place order",
+    "placing": "Processing...",
+    "summary": "Order summary",
+    "shippingMethod": "Shipping method",
+    "stripeBlocked": "Card payment is pending the administrator's Stripe test key."
+  },
+  "order": {
+    "confirmedTitle": "Order confirmed",
+    "thanks": "Thank you for shopping at Tiệm Táo.",
+    "orderId": "Order ID",
+    "backHome": "Back to home"
+  },
+  "footer": {
+    "shop": "Shop",
+    "info": "Information",
+    "about": "About Tiệm Táo",
+    "support": "Support",
+    "warranty": "Warranty",
+    "rights": "A non-commercial portfolio demo."
+  },
+  "common": {
+    "loading": "Loading...",
+    "notFound": "Content not found."
+  }
+}

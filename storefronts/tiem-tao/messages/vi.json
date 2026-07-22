@@ -1,0 +1,90 @@
+{
+  "brand": {
+    "name": "Tiệm Táo",
+    "disclaimer": "Bản demo trong hồ sơ năng lực. Không liên kết với Apple Inc."
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "products": "Sản phẩm",
+    "cart": "Giỏ hàng",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
+    "toggleTheme": "Đổi giao diện sáng tối",
+    "language": "Ngôn ngữ"
+  },
+  "home": {
+    "eyebrow": "Đại lý uỷ quyền phong cách",
+    "title": "Công nghệ tinh tuyển, trọn niềm tin.",
+    "subtitle": "Những thiết bị được tuyển chọn kỹ lưỡng, giao nhanh trên toàn quốc, trả góp 0% linh hoạt.",
+    "cta": "Khám phá sản phẩm",
+    "featuredTitle": "Nổi bật",
+    "featuredSubtitle": "Vài lựa chọn được yêu thích nhất tại Tiệm Táo.",
+    "categoriesTitle": "Danh mục",
+    "viewAll": "Xem tất cả"
+  },
+  "products": {
+    "title": "Tất cả sản phẩm",
+    "subtitle": "Giá đã bao gồm chính sách bảo hành chính hãng.",
+    "empty": "Chưa có sản phẩm nào.",
+    "from": "từ"
+  },
+  "pdp": {
+    "addToCart": "Thêm vào giỏ",
+    "adding": "Đang thêm...",
+    "added": "Đã thêm vào giỏ",
+    "storage": "Dung lượng",
+    "color": "Màu sắc",
+    "specs": "Thông số",
+    "installmentTitle": "Trả góp 0%",
+    "installmentValue": "{amount}/tháng x {months} tháng",
+    "installmentNote": "Chỉ là giao diện minh hoạ. Không phải chào mời tài chính thật.",
+    "selectVariant": "Chọn phiên bản",
+    "outOfStock": "Tạm hết hàng"
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "empty": "Giỏ hàng của bạn đang trống.",
+    "continue": "Tiếp tục mua sắm",
+    "subtotal": "Tạm tính",
+    "checkout": "Thanh toán",
+    "remove": "Xoá",
+    "quantity": "Số lượng"
+  },
+  "checkout": {
+    "title": "Thanh toán",
+    "contact": "Thông tin liên hệ",
+    "email": "Email",
+    "shipping": "Địa chỉ giao hàng",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "address": "Địa chỉ",
+    "city": "Thành phố",
+    "phone": "Số điện thoại",
+    "payment": "Phương thức thanh toán",
+    "cod": "Thanh toán khi nhận hàng (COD)",
+    "card": "Thẻ (Stripe thử nghiệm)",
+    "placeOrder": "Đặt hàng",
+    "placing": "Đang xử lý...",
+    "summary": "Đơn hàng",
+    "shippingMethod": "Phương thức vận chuyển",
+    "stripeBlocked": "Thanh toán thẻ đang chờ khoá thử nghiệm Stripe của quản trị viên."
+  },
+  "order": {
+    "confirmedTitle": "Đặt hàng thành công",
+    "thanks": "Cảm ơn bạn đã mua sắm tại Tiệm Táo.",
+    "orderId": "Mã đơn hàng",
+    "backHome": "Về trang chủ"
+  },
+  "footer": {
+    "shop": "Mua sắm",
+    "info": "Thông tin",
+    "about": "Về Tiệm Táo",
+    "support": "Hỗ trợ",
+    "warranty": "Bảo hành",
+    "rights": "Dự án minh hoạ, phi thương mại."
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "notFound": "Không tìm thấy nội dung."
+  }
+}
