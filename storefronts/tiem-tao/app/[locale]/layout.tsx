@@ -4,8 +4,10 @@ import { Inter } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
+import { getRegion } from "@/lib/region";
 import { ThemeProvider } from "@/components/theme-provider";
+import { CartProvider } from "@/components/cart-provider";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 
@@ -39,6 +41,8 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
+  const region = await getRegion(locale as Locale);
+
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <head>
@@ -47,9 +51,11 @@ export default async function LocaleLayout({
       <body className="flex min-h-screen flex-col">
         <NextIntlClientProvider>
           <ThemeProvider>
-            <Nav />
-            <main className="flex-1">{children}</main>
-            <Footer />
+            <CartProvider regionId={region?.id}>
+              <Nav />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </CartProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ThemeToggle } from "./theme-toggle";
 import { LocaleSwitch } from "./locale-switch";
+import { useCart } from "./cart-provider";
 import { cn } from "@/lib/cn";
 
 // The one persistent glass surface per view: a floating frosted pill.
@@ -20,6 +21,7 @@ export function Nav() {
   const t = useTranslations("nav");
   const brand = useTranslations("brand");
   const pathname = usePathname();
+  const { count } = useCart();
   const [open, setOpen] = useState(false);
 
   const links = [
@@ -66,9 +68,14 @@ export function Nav() {
           <ThemeToggle />
           <Link
             href="/cart"
-            className="text-sm text-[var(--label-secondary)] transition-colors duration-200 hover:text-[var(--label-primary)]"
+            className="inline-flex items-center gap-1.5 text-sm text-[var(--label-secondary)] transition-colors duration-200 hover:text-[var(--label-primary)]"
           >
             {t("cart")}
+            {count > 0 && (
+              <span className="grid min-w-5 place-items-center rounded-full bg-[var(--cta-fill)] px-1.5 text-xs font-semibold text-[var(--cta-label)]">
+                {count}
+              </span>
+            )}
           </Link>
         </div>
 
@@ -122,9 +129,14 @@ export function Nav() {
             <Link
               href="/cart"
               onClick={() => setOpen(false)}
-              className="rounded-[var(--radius-button)] px-3 py-2.5 text-sm text-[var(--label-secondary)]"
+              className="flex items-center justify-between rounded-[var(--radius-button)] px-3 py-2.5 text-sm text-[var(--label-secondary)]"
             >
-              {t("cart")}
+              <span>{t("cart")}</span>
+              {count > 0 && (
+                <span className="grid min-w-5 place-items-center rounded-full bg-[var(--cta-fill)] px-1.5 text-xs font-semibold text-[var(--cta-label)]">
+                  {count}
+                </span>
+              )}
             </Link>
           </div>
           <div className="mt-3 flex items-center justify-between border-t border-[var(--hairline)] pt-3">
