@@ -13,6 +13,29 @@ export function localizedTitle(
   return product.title ?? "";
 }
 
+// The translator as this module needs it. next-intl types the key against the
+// namespace's literal keys; an axis key is only known at runtime, so the shape
+// is restated here and `has` is what makes the lookup safe.
+type AxisTranslator = {
+  (key: string): string;
+  has(key: string): boolean;
+};
+
+// A variant axis title is a core (English) product field - "Storage", "Color",
+// "Connector" - and the catalogs key its label off the lowercased title. Deriving
+// the key means a new axis is a message-catalog edit and never a code edit, and
+// an axis the catalogs do not carry falls back to its core title instead of
+// rendering a bare key. The PDP's variant controls and its spec table both read
+// through here so the two can never disagree about an axis.
+export function axisLabel(
+  t: AxisTranslator,
+  title: string | null | undefined
+): string {
+  const raw = title ?? "";
+  const key = raw.trim().toLowerCase();
+  return key && t.has(key) ? t(key) : raw;
+}
+
 // Taken off the product rather than named directly: HttpTypes exports the
 // category shape a product embeds only through this field.
 type ProductCategory = NonNullable<HttpTypes.StoreProduct["categories"]>[number];

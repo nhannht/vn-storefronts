@@ -37,6 +37,7 @@
     "added": "Added to bag",
     "storage": "Storage",
     "color": "Color",
+    "connector": "Connector",
     "specs": "Specifications",
     "installmentTitle": "0% installments",
     "installmentValue": "{amount}/mo for {months} months",

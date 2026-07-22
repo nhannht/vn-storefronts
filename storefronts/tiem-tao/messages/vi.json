@@ -37,6 +37,7 @@
     "added": "Đã thêm vào giỏ",
     "storage": "Dung lượng",
     "color": "Màu sắc",
+    "connector": "Cổng kết nối",
     "specs": "Thông số",
     "installmentTitle": "Trả góp 0%",
     "installmentValue": "{amount}/tháng x {months} tháng",
