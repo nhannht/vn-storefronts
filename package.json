@@ -1,0 +1,10 @@
+{
+  "name": "vn-storefronts",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Portfolio e-commerce demos: three Next.js storefronts on one Medusa v2 backend (VND/USD, vi/en).",
+  "workspaces": [
+    "backend",
+    "storefronts/*"
+  ]
+}

@@ -1,0 +1,23 @@
+# Dependencies (bun hoists to the workspace root)
+node_modules/
+
+# Env files. Real secrets live only in backend/.env (gitignored).
+# The committed templates are .env.example and .env.template.
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Medusa build artifacts
+.medusa/
+
+# Build output / uploads
+dist/
+uploads/
+
+# Logs
+*.log
+
+# OS / editor cruft
+.DS_Store
+.idea/
