@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import type { HttpTypes } from "@medusajs/types";
 import { useRouter } from "@/i18n/navigation";
 import { useCart } from "./cart-provider";
 import { CtaButton, CtaLink } from "./cta-button";
@@ -52,6 +53,37 @@ export function CheckoutForm() {
     if (codAvailable) setMethod("cod");
   }, [codAvailable]);
 
+  // The backend prices shipping per region, so the summary cannot know the fee
+  // until the cart resolves. It is fetched once and held here: this single
+  // value both prices the summary and is what placeOrder attaches, so the
+  // customer can never read one total and be charged another.
+  const [shippingOption, setShippingOption] =
+    useState<HttpTypes.StoreCartShippingOptionWithServiceZone | null>(null);
+  const cartId = cart?.id;
+  const cartRegionId = cart?.region_id;
+
+  useEffect(() => {
+    // A cart with no settled region has nothing to price the option in. The
+    // region is a dependency because switching locale re-points the SAME cart
+    // id at the other region, and the option then re-costs into that currency.
+    if (!cartId || !cartRegionId) return;
+    let active = true;
+    (async () => {
+      try {
+        const { shipping_options } =
+          await sdk.store.fulfillment.listCartOptions({ cart_id: cartId });
+        if (active) setShippingOption(shipping_options?.[0] ?? null);
+      } catch {
+        // A failed lookup must not invent a number: the summary falls back to
+        // the pending note and placeOrder still refuses to submit blind.
+        if (active) setShippingOption(null);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [cartId, cartRegionId]);
+
   const countryCode =
     cart?.region?.countries?.[0]?.iso_2?.toLowerCase() ??
     (codAvailable ? "vn" : "us");
@@ -92,15 +124,16 @@ export function CheckoutForm() {
         billing_address: address,
       });
 
-      const { shipping_options } = await sdk.store.fulfillment.listCartOptions({
-        cart_id: cart.id,
-      });
-      const option = shipping_options?.[0];
-      if (!option) throw new Error("No shipping option available for this cart.");
+      // Deliberately no second lookup here. Attaching anything other than the
+      // option the summary already priced is exactly how the shown total and
+      // the charged total drift apart.
+      if (!shippingOption) {
+        throw new Error("No shipping option available for this cart.");
+      }
 
       const { cart: withShipping } = await sdk.store.cart.addShippingMethod(
         cart.id,
-        { option_id: option.id },
+        { option_id: shippingOption.id },
       );
 
       await sdk.store.payment.initiatePaymentSession(withShipping, {
@@ -128,6 +161,21 @@ export function CheckoutForm() {
   const subtotal =
     cart?.item_subtotal ??
     items.reduce((s, i) => s + (i.unit_price ?? 0) * (i.quantity ?? 0), 0);
+
+  // Price the fee only while the option is still denominated in the cart's own
+  // currency. Effects run after paint, so the render right after a locale
+  // switch pairs a fresh USD subtotal with the not-yet-refetched VND option,
+  // and that frame would otherwise print a total that was never real. The same
+  // check covers the honest gaps (no option yet, a failed lookup, a region with
+  // none) by leaving the fee unpriced instead of guessed.
+  const shippingAmount =
+    shippingOption &&
+    typeof shippingOption.amount === "number" &&
+    shippingOption.calculated_price?.currency_code?.toLowerCase() ===
+      currency.toLowerCase()
+      ? shippingOption.amount
+      : null;
+  const total = shippingAmount === null ? null : subtotal + shippingAmount;
 
   const inputClass =
     "w-full rounded-[var(--radius-button)] border border-[var(--hairline)] bg-[var(--base)] px-4 py-2.5 text-sm text-[var(--label-primary)] outline-none placeholder:text-[var(--label-tertiary)] focus:border-[var(--accent)]";
@@ -293,13 +341,45 @@ export function CheckoutForm() {
             </li>
           ))}
         </ul>
-        <div className="mt-4 flex items-center justify-between border-t border-[var(--hairline)] pt-4">
-          <span className="text-sm text-[var(--label-secondary)]">
-            {t("summary")}
-          </span>
-          <span className="text-lg font-semibold text-[var(--label-primary)]">
-            {formatPrice(subtotal, currency)}
-          </span>
+        <div className="mt-4 border-t border-[var(--hairline)] pt-4">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-[var(--label-secondary)]">
+                {t("subtotal")}
+              </span>
+              <span className="text-[var(--label-primary)]">
+                {formatPrice(subtotal, currency)}
+              </span>
+            </div>
+            {shippingAmount !== null && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-[var(--label-secondary)]">
+                  {t("shippingFee")}
+                </span>
+                <span className="text-[var(--label-primary)]">
+                  {formatPrice(shippingAmount, currency)}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* No priced option means no total worth standing behind, so the
+              subtotal is left labelled as a subtotal and the note says the fee
+              is still to come. */}
+          {total !== null ? (
+            <div className="mt-3 flex items-center justify-between border-t border-[var(--hairline)] pt-3">
+              <span className="text-sm text-[var(--label-secondary)]">
+                {t("total")}
+              </span>
+              <span className="text-lg font-semibold text-[var(--label-primary)]">
+                {formatPrice(total, currency)}
+              </span>
+            </div>
+          ) : (
+            <p className="mt-3 text-xs text-[var(--label-tertiary)]">
+              {t("shippingPending")}
+            </p>
+          )}
         </div>
 
         <CtaButton
