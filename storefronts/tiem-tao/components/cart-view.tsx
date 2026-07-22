@@ -6,14 +6,15 @@ import { useCart } from "./cart-provider";
 import { CtaLink } from "./cta-button";
 import { formatPrice } from "@/lib/format";
 
-// A bag with three products renders three identical steppers, so each stepper
-// names itself from its own hidden verb PLUS this line's product title:
-// aria-labelledby concatenates the elements it points at, which is the only way
-// to build "Increase quantity, iPhone 15 Pro" out of the verb-only keys the
-// catalogs carry. Ids are namespaced because the line id alone is not ours.
+// A bag with three products renders three identical steppers and three
+// identical remove buttons, so each names itself from its own verb PLUS this
+// line's product title: aria-labelledby concatenates the elements it points at,
+// which is the only way to build "Increase quantity, iPhone 15 Pro" out of the
+// verb-only keys the catalogs carry. Ids are namespaced because the line id
+// alone is not ours.
 const cartLineId = (
   itemId: string,
-  part: "title" | "increase" | "decrease",
+  part: "title" | "increase" | "decrease" | "remove",
 ) => `tt-cart-${itemId}-${part}`;
 
 export function CartView() {
@@ -112,11 +113,14 @@ export function CartView() {
                 </div>
                 <button
                   type="button"
+                  aria-labelledby={`${cartLineId(item.id, "remove")} ${cartLineId(item.id, "title")}`}
                   disabled={busy}
                   onClick={() => removeItem(item.id)}
                   className="text-xs text-[var(--label-tertiary)] transition-colors duration-200 hover:text-[var(--accent)] disabled:opacity-50"
                 >
-                  {t("remove")}
+                  {/* The visible label IS the verb here, so it carries the id
+                      instead of a duplicate sr-only copy. */}
+                  <span id={cartLineId(item.id, "remove")}>{t("remove")}</span>
                 </button>
               </div>
             </div>
