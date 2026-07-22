@@ -63,6 +63,12 @@
   --radius-card: 26px;
   --radius-button: 18px;
 
+  /* Segmented control (variant picker): inset track + raised knob. The knob
+     flashes translucent (transient glass) only while it slides. */
+  --seg-track: rgba(255, 255, 255, 0.05);
+  --seg-knob: rgba(255, 255, 255, 0.16);
+  --seg-knob-glass: rgba(255, 255, 255, 0.1);
+
   /* Focus ring */
   --focus-ring: rgba(228, 197, 126, 0.7);
 }
@@ -107,6 +113,11 @@
     radial-gradient(1200px 800px at 50% -10%, rgba(201, 162, 74, 0.1), transparent 60%),
     radial-gradient(1000px 900px at 15% 20%, rgba(240, 235, 228, 0.9), transparent 65%),
     radial-gradient(1100px 1000px at 85% 80%, rgba(245, 240, 232, 0.9), transparent 65%);
+
+  /* Segmented control (light) */
+  --seg-track: rgba(0, 0, 0, 0.05);
+  --seg-knob: #ffffff;
+  --seg-knob-glass: rgba(255, 255, 255, 0.6);
 
   --focus-ring: rgba(128, 99, 38, 0.7);
 }
