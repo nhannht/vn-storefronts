@@ -34,11 +34,12 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-50 px-4 pt-4">
-      <nav
-        aria-label="Primary"
-        style={glassStyle}
-        className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-[var(--radius-pill)] px-5 py-3 shadow-[0_10px_40px_-24px_rgba(0,0,0,0.6)]"
-      >
+      <div className="flex justify-center">
+        <nav
+          aria-label="Primary"
+          style={glassStyle}
+          className="flex w-fit max-w-full items-center gap-6 rounded-[var(--radius-pill)] px-5 py-3 shadow-[0_10px_40px_-24px_var(--glass-shadow)]"
+        >
         <Link
           href="/"
           className="text-lg font-semibold tracking-tight text-[var(--label-primary)]"
@@ -104,11 +105,12 @@ export function Nav() {
             )}
           </svg>
         </button>
-      </nav>
+        </nav>
+      </div>
 
       {open && (
         <div
-          className="mx-auto mt-2 max-w-6xl rounded-[var(--radius-card)] border border-[var(--hairline)] bg-[var(--paper)] p-4 md:hidden"
+          className="mx-auto mt-2 w-[min(92vw,22rem)] rounded-[var(--radius-card)] border border-[var(--hairline)] bg-[var(--paper)] p-4 md:hidden"
         >
           <div className="flex flex-col gap-1">
             {links.map((l) => (
