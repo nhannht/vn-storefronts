@@ -60,9 +60,6 @@ export default async function ProductPage({
               />
             ))}
           </div>
-          {/* Buy-bar reveal trigger: the sticky buy bar appears once this
-              (the gallery's end) scrolls out of view. */}
-          <div id="tt-gallery-sentinel" aria-hidden="true" />
         </div>
 
         <div>
@@ -86,7 +83,18 @@ export default async function ProductPage({
             {t("specs")}
           </h2>
           <dl className="mt-5 overflow-hidden rounded-[var(--radius-card)] border border-[var(--hairline)] bg-[var(--paper)]">
-            {options.map((option, i) => (
+            {options.map((option, i) => {
+              // Localize the axis label through the same path as the variant
+              // controls (EN core field -> vi label); unmapped axes keep their
+              // core title.
+              const key = option.title?.toLowerCase();
+              const label =
+                key === "storage"
+                  ? t("storage")
+                  : key === "color"
+                    ? t("color")
+                    : option.title;
+              return (
               <div
                 key={option.id}
                 className={
@@ -96,7 +104,7 @@ export default async function ProductPage({
                 }
               >
                 <dt className="w-32 shrink-0 text-sm text-[var(--label-tertiary)]">
-                  {option.title}
+                  {label}
                 </dt>
                 <dd className="text-sm text-[var(--label-primary)]">
                   {Array.from(
@@ -104,7 +112,8 @@ export default async function ProductPage({
                   ).join(", ")}
                 </dd>
               </div>
-            ))}
+              );
+            })}
           </dl>
         </section>
       )}
