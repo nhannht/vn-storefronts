@@ -4,9 +4,10 @@ import { useEffect, useRef } from "react";
 import { Renderer, Program, Mesh, Triangle, RenderTarget, Vec3 } from "ogl";
 import { useTheme } from "./theme-provider";
 
-// Single-hue (champagne gold) ambient glow. Noise is BAKED once into a texture
-// at init; the per-frame shader does two texture taps plus analytic radial
-// falloff, so it holds the budget. No hue rotation - one gold family only.
+// Single-hue (champagne gold) ambient glow, DARK THEME ONLY (director amendment
+// 2026-07-22: light theme uses the tokens.css light radial recipe alone, no
+// WebGL). Noise is BAKED once into a texture; the per-frame shader does two
+// texture taps plus analytic radial falloff, so it holds the budget.
 
 const vert = /* glsl */ `
   precision highp float;
@@ -39,27 +40,39 @@ const drawFrag = /* glsl */ `
   uniform sampler2D tNoise;
   uniform float iTime;
   uniform vec3 gold;
+  uniform float uPeak;     // overall intensity
+  uniform float uFalloff;  // radius where the glow fades out
+  uniform vec2 uCenter;    // glow center (lifted up on phones)
   varying vec2 vUv;
   void main(){
     vec2 uv = vUv;
-    float d = distance(uv, vec2(0.5));
-    // slow, incommensurate drift so the churn never visibly repeats
+    float d = distance(uv, uCenter);
     vec2 drift = vec2(sin(iTime * 0.061), cos(iTime * 0.047)) * 0.12;
     vec2 drift2 = vec2(cos(iTime * 0.033), sin(iTime * 0.029)) * 0.08;
     float n1 = texture2D(tNoise, uv * 1.15 + drift).r;
     float n2 = texture2D(tNoise, uv * 0.8 - drift2).g;
     float churn = 0.5 + 0.5 * mix(n1, n2, 0.5);
-    float glow = pow(smoothstep(0.66, 0.02, d), 1.7);
-    float a = glow * churn * 0.9;
+    float glow = pow(smoothstep(uFalloff, 0.02, d), 1.9);
+    float a = glow * churn * uPeak;
     gl_FragColor = vec4(gold * a, a); // premultiplied
   }
 `;
+
+// Desktop vs phone tuning. On phones the glow was too hot behind the subtitle,
+// so dim the peak AND lift the center up behind the headline so the subtitle
+// band sits in the dark falloff (verified >=4.5:1 for the secondary label).
+const DESKTOP = { peak: 0.9, falloff: 0.66, cy: 0.5 };
+const MOBILE = { peak: 0.45, falloff: 0.52, cy: 0.22 };
+const MOBILE_BP = 640;
 
 export function AmbientGlow() {
   const ref = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
 
   useEffect(() => {
+    // Dark theme only: on light, render nothing and let any prior GL context
+    // tear down via this effect's cleanup (full unmount, not hidden).
+    if (theme === "light") return;
     const el = ref.current;
     if (!el) return;
 
@@ -68,15 +81,12 @@ export function AmbientGlow() {
     gl.clearColor(0, 0, 0, 0);
     el.appendChild(gl.canvas);
 
-    // Gold uniform is JS-parsed for WebGL, so it cannot read a CSS var. These
-    // RGB floats are the one mirrored literal per JS color; keep in sync with
-    // the --accent token in tokens.css (dark gold / light bronze).
-    const gold =
-      theme === "light" ? [0.502, 0.388, 0.149] : [0.894, 0.773, 0.494];
+    // Gold uniform is JS-parsed for WebGL (dark --accent). One mirrored literal;
+    // keep in sync with tokens.css --accent.
+    const gold = [0.894, 0.773, 0.494];
 
     const geometry = new Triangle(gl);
 
-    // Bake the noise fields once.
     const target = new RenderTarget(gl, { width: 1024, height: 1024 });
     const bake = new Mesh(gl, {
       geometry,
@@ -91,6 +101,9 @@ export function AmbientGlow() {
         tNoise: { value: target.texture },
         iTime: { value: 0 },
         gold: { value: new Vec3(gold[0], gold[1], gold[2]) },
+        uPeak: { value: DESKTOP.peak },
+        uFalloff: { value: DESKTOP.falloff },
+        uCenter: { value: [0.5, DESKTOP.cy] },
       },
     });
     const mesh = new Mesh(gl, { geometry, program });
@@ -105,6 +118,10 @@ export function AmbientGlow() {
       renderer.setSize(w * scale, h * scale);
       gl.canvas.style.width = w + "px";
       gl.canvas.style.height = h + "px";
+      const t = window.innerWidth < MOBILE_BP ? MOBILE : DESKTOP;
+      program.uniforms.uPeak.value = t.peak;
+      program.uniforms.uFalloff.value = t.falloff;
+      program.uniforms.uCenter.value = [0.5, t.cy];
     }
     window.addEventListener("resize", resize);
     resize();
@@ -114,13 +131,13 @@ export function AmbientGlow() {
     if (reduce) {
       renderer.render({ scene: mesh });
     } else {
-      const FRAME_MS = 1000 / 30 - 0.5; // 30fps cadence gate
+      const FRAME_MS = 1000 / 30 - 0.5;
       let last = -Infinity;
-      const update = (t: number) => {
+      const update = (time: number) => {
         rafId = requestAnimationFrame(update);
-        if (t - last < FRAME_MS) return;
-        last = t;
-        program.uniforms.iTime.value = t * 0.001;
+        if (time - last < FRAME_MS) return;
+        last = time;
+        program.uniforms.iTime.value = time * 0.001;
         renderer.render({ scene: mesh });
       };
       rafId = requestAnimationFrame(update);
@@ -133,6 +150,9 @@ export function AmbientGlow() {
       if (gl.canvas.parentNode) gl.canvas.parentNode.removeChild(gl.canvas);
     };
   }, [theme]);
+
+  // No DOM on light: the hero background is the tokens.css light radial recipe.
+  if (theme === "light") return null;
 
   return (
     <div
