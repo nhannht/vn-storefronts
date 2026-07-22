@@ -11,8 +11,8 @@ export default async function CheckoutPage({
   const t = await getTranslations("checkout");
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <h1 className="text-3xl font-semibold tracking-tight text-[var(--label-primary)] sm:text-4xl">
+    <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+      <h1 className="text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-tight tracking-[-0.01em] text-[var(--label-primary)]">
         {t("title")}
       </h1>
       <div className="mt-8">

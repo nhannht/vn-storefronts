@@ -12,7 +12,7 @@ export async function Footer() {
 
   return (
     <footer id="tt-footer" className="mt-24 border-t border-[var(--hairline)]">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 md:grid-cols-3">
+      <div className="mx-auto grid max-w-[1200px] gap-10 px-4 py-14 sm:grid-cols-2 sm:px-6 md:grid-cols-3">
         <div className="max-w-xs">
           <p className="text-lg font-semibold tracking-tight text-[var(--label-primary)]">
             {brand("name")}
@@ -23,7 +23,7 @@ export async function Footer() {
         </div>
 
         <nav aria-label={t("shop")} className="flex flex-col gap-2.5 text-sm">
-          <p className="text-xs uppercase tracking-widest text-[var(--label-tertiary)]">
+          <p className="text-[0.8125rem] font-medium uppercase tracking-[0.08em] text-[var(--label-tertiary)]">
             {t("shop")}
           </p>
           <Link
@@ -41,7 +41,7 @@ export async function Footer() {
         </nav>
 
         <nav aria-label={t("info")} className="flex flex-col gap-2.5 text-sm">
-          <p className="text-xs uppercase tracking-widest text-[var(--label-tertiary)]">
+          <p className="text-[0.8125rem] font-medium uppercase tracking-[0.08em] text-[var(--label-tertiary)]">
             {t("info")}
           </p>
           <span className="text-[var(--label-secondary)]">{t("about")}</span>
@@ -50,7 +50,7 @@ export async function Footer() {
         </nav>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 pb-10">
+      <div className="mx-auto max-w-[1200px] px-4 pb-10 sm:px-6">
         <p className="text-xs text-[var(--label-tertiary)]">{t("rights")}</p>
       </div>
     </footer>
