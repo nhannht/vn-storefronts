@@ -1,0 +1,68 @@
+/*
+  External theme overrides for the vendored GlassSurface, used as the site's two
+  persistent glass panes (nav pill, PDP buy bar). The vendored files stay
+  byte-untouched; all theming happens here through the extra `.tt-glass` class
+  that glass-pane.tsx passes in alongside the vendored classes.
+
+  The vendored material is themed with `light-dark()` and
+  `@media (prefers-color-scheme: dark)`, i.e. by the OS. This site is themed by
+  the `data-theme` attribute, which the user can set against the OS. Every rule
+  below therefore restates the FULL set of properties its vendored counterpart
+  declares: any property left out would keep falling through to the OS-driven
+  rule and desync whenever the two disagree. Media queries add no specificity,
+  so the three-class selectors here win outright.
+*/
+
+/*
+  Chromium path. The refraction is the vendored SVG feDisplacementMap chain,
+  referenced through `--filter-id` and kept INSIDE the backdrop-filter chain -
+  never as a `filter: url()` on a transparent overlay (locked refraction rule).
+
+  blur() runs first, so the frost is sampled from the raw backdrop with the
+  edge-duplication backdrop-filter guarantees, and this pane can never read less
+  legible than the frosted fallback below. The displacement then bends that
+  frosted backdrop; its magnitude at the rim is tens of pixels, so it survives
+  the blur as a chromatically-offset rim shift rather than as fine detail.
+*/
+.glass-surface.tt-glass.glass-surface--svg {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) var(--filter-id)
+    saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 40px -24px var(--glass-shadow);
+}
+
+/*
+  Non-Chromium path (Safari and Firefox, which the vendored feature detect
+  rejects because neither renders an SVG filter reference in a backdrop chain):
+  the frosted fallback the spec mandates - translucent token fill, blur,
+  saturate, no refraction. Same tokens as the refracting path above so both
+  panes read as one material in every browser.
+
+  Do NOT hand-write `-webkit-backdrop-filter` here. Lightning CSS merges a
+  prefixed/unprefixed pair and keeps whichever came last, so writing the pair by
+  hand silently drops the unprefixed property and leaves Firefox - one of the
+  two browsers this rule exists for - with no blur at all. Declaring only the
+  standard property makes the compiler emit both, prefixed first.
+*/
+.glass-surface.tt-glass.glass-surface--fallback {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 40px -24px var(--glass-shadow);
+}
+
+/*
+  The vendored no-backdrop-filter fallback-of-last-resort paints an extra
+  OS-theme-driven wash through a pseudo element. The token fill above already
+  covers that case, and the wash would light up a dark pane on a light OS.
+*/
+.glass-surface.tt-glass::before {
+  content: none;
+}
+
+/* The vendored content wrapper centers its children and adds its own padding;
+   each pane's own row owns padding and alignment instead. */
+.tt-glass .glass-surface__content {
+  padding: 0;
+}

@@ -7,10 +7,16 @@ import { useCart } from "./cart-provider";
 import { useMobileMenu } from "./ui-state";
 import { CtaButton } from "./cta-button";
 import { SegmentedControl } from "./segmented-control";
+import { GlassPane } from "./glass-pane";
 import { formatPrice } from "@/lib/format";
 import { installmentMonthly } from "@/lib/installment";
 
 const INSTALLMENT_MONTHS = 12;
+
+// Locked buy-bar metrics: 64px tall, radius 28 (--radius-pill, mirrored in
+// glass-pane.tsx), max-width 720, 16px above the viewport bottom edge. Same
+// fixed-height / fluid-width split as the nav pill.
+const BAR_HEIGHT = 64;
 
 export function PdpPurchase({
   product,
@@ -186,20 +192,14 @@ export function PdpPurchase({
         }
         aria-hidden={!showBar}
       >
-        <div
+        <GlassPane
+          width="100%"
+          height={BAR_HEIGHT}
           className={
-            "flex h-16 w-full max-w-[720px] items-center justify-between gap-4 rounded-[var(--radius-pill)] px-5 shadow-[0_10px_40px_-24px_var(--glass-shadow)] " +
-            (showBar ? "pointer-events-auto" : "")
+            "max-w-[720px] " + (showBar ? "pointer-events-auto" : "")
           }
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            backdropFilter:
-              "blur(var(--glass-blur)) saturate(var(--glass-saturate))",
-            WebkitBackdropFilter:
-              "blur(var(--glass-blur)) saturate(var(--glass-saturate))",
-          }}
         >
+        <div className="flex h-full w-full items-center justify-between gap-4 px-5">
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-[var(--label-primary)]">
               {title}
@@ -221,6 +221,7 @@ export function PdpPurchase({
             </CtaButton>
           </div>
         </div>
+        </GlassPane>
       </div>
     </div>
   );
