@@ -1,42 +1,59 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import type { HttpTypes } from "@medusajs/types";
+import { Link } from "@/i18n/navigation";
 import { ProductCard } from "./product-card";
+import {
+  CATEGORY_PARAM,
+  catalogCategories,
+  categoryHref,
+} from "@/lib/product-view";
 import { cn } from "@/lib/cn";
 import "./products-browser.css";
 
-// Client listing: paper category chips filter the fetched catalog in place,
-// then the paper card grid (3-up desktop, 2-up tablet, 1-up mobile).
+// The URL owns the filter. Reading it is split out from the listing itself so
+// the listing can also be rendered ahead of that read (products/page.tsx uses
+// it as the Suspense fallback), which is what keeps the route prerendered.
 export function ProductsBrowser({
   products,
 }: {
   products: HttpTypes.StoreProduct[];
 }) {
+  const params = useSearchParams();
+  return (
+    <ProductsListing products={products} active={params.get(CATEGORY_PARAM)} />
+  );
+}
+
+// Paper category chips filter the fetched catalog in place, then the paper card
+// grid (3-up desktop, 2-up tablet, 1-up mobile). Chips are links, not buttons:
+// the filtered view is then shareable, bookmarkable and back-button correct for
+// free, and there is no second copy of the selection to keep in sync.
+export function ProductsListing({
+  products,
+  active,
+}: {
+  products: HttpTypes.StoreProduct[];
+  active: string | null;
+}) {
   const locale = useLocale();
   const t = useTranslations("products");
-  const [active, setActive] = useState<string | null>(null);
 
-  // Category chips derived from the catalog, labeled per locale (name_vi).
-  const categories = useMemo(() => {
-    const byId = new Map<string, string>();
-    for (const p of products) {
-      for (const c of p.categories ?? []) {
-        if (byId.has(c.id)) continue;
-        const meta = (c.metadata ?? {}) as Record<string, unknown>;
-        const label =
-          locale === "vi" && typeof meta.name_vi === "string"
-            ? meta.name_vi
-            : (c.name ?? "");
-        byId.set(c.id, label);
-      }
-    }
-    return [...byId.entries()].map(([id, label]) => ({ id, label }));
-  }, [products, locale]);
+  const categories = useMemo(
+    () => catalogCategories(products, locale),
+    [products, locale],
+  );
 
-  const filtered = active
-    ? products.filter((p) => p.categories?.some((c) => c.id === active))
+  // A handle the catalog does not have (a stale share, a reseed that dropped a
+  // category) resolves to no filter: the full catalog with "All" lit explains
+  // itself, an empty grid is a dead end.
+  const selected = categories.some((c) => c.handle === active) ? active : null;
+
+  const filtered = selected
+    ? products.filter((p) => p.categories?.some((c) => c.handle === selected))
     : products;
 
   return (
@@ -47,14 +64,14 @@ export function ProductsBrowser({
         // that stops short of the edge reads as broken, one that runs off it
         // reads as scrollable.
         <div className="tt-chip-row -mx-4 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6">
-          <FilterChip active={active === null} onClick={() => setActive(null)}>
+          <FilterChip href={categoryHref(null)} active={selected === null}>
             {t("allCategories")}
           </FilterChip>
           {categories.map((c) => (
             <FilterChip
-              key={c.id}
-              active={active === c.id}
-              onClick={() => setActive(c.id)}
+              key={c.handle}
+              href={categoryHref(c.handle)}
+              active={selected === c.handle}
             >
               {c.label}
             </FilterChip>
@@ -72,19 +89,20 @@ export function ProductsBrowser({
 }
 
 function FilterChip({
+  href,
   active,
-  onClick,
   children,
 }: {
+  href: ReturnType<typeof categoryHref>;
   active: boolean;
-  onClick: () => void;
   children: React.ReactNode;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
+    <Link
+      href={href}
+      // Filtering is not a jump to a new page; hold the reader's scroll.
+      scroll={false}
+      aria-current={active ? "true" : undefined}
       className={cn(
         // shrink-0 keeps the chip at its intrinsic width, so a row too narrow
         // for its chips overflows (and scrolls) instead of squeezing them.
@@ -95,6 +113,6 @@ function FilterChip({
       )}
     >
       {children}
-    </button>
+    </Link>
   );
 }

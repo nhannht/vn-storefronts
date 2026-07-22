@@ -1,8 +1,9 @@
+import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getRegion } from "@/lib/region";
 import { listProducts } from "@/lib/medusa";
-import { ProductsBrowser } from "@/components/products-browser";
+import { ProductsBrowser, ProductsListing } from "@/components/products-browser";
 
 export default async function ProductsPage({
   params,
@@ -29,7 +30,14 @@ export default async function ProductsPage({
       </header>
 
       {products.length > 0 ? (
-        <ProductsBrowser products={products} />
+        // The browser reads ?category=, which no build-time render can know.
+        // The boundary confines that read so the route still prerenders, and
+        // the fallback is the real unfiltered listing rather than a skeleton -
+        // so the prerendered HTML is the full catalog, and the unfiltered visit
+        // (every visit that is not a category deep link) never flashes.
+        <Suspense fallback={<ProductsListing products={products} active={null} />}>
+          <ProductsBrowser products={products} />
+        </Suspense>
       ) : (
         <p className="mt-10 text-sm text-[var(--label-secondary)]">{t("empty")}</p>
       )}
