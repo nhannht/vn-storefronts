@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { HttpTypes } from "@medusajs/types";
 import { useCart } from "./cart-provider";
@@ -75,17 +75,24 @@ export function PdpPurchase({
 
   const buttonLabel = busy ? t("adding") : added ? t("added") : t("addToCart");
 
-  // The sticky buy bar reveals once the gallery scrolls out of view (per the
-  // buy-bar anatomy). Observe a sentinel the page renders at the gallery's end;
-  // observing the gallery (not the inline CTA) keeps the trigger correct on
-  // mobile, where the inline CTA starts below the fold.
+  // The sticky buy bar reveals once the primary buy area (the inline CTA) has
+  // scrolled ABOVE the viewport - i.e. the user scrolled past the gallery/CTA
+  // hero. The `top < 0` guard distinguishes "scrolled past" from "not reached
+  // yet": on mobile the inline CTA starts below the fold (top > 0), so the bar
+  // stays hidden at the top; on desktop it hides while the CTA sits beside the
+  // gallery. (A gallery-end sentinel failed here: on desktop the tall two-column
+  // gallery never scrolls its bottom above the viewport top.)
+  const inlineCtaRef = useRef<HTMLDivElement>(null);
   const [barVisible, setBarVisible] = useState(false);
   useEffect(() => {
-    const el = document.getElementById("tt-gallery-sentinel");
+    const el = inlineCtaRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([entry]) => setBarVisible(!entry.isIntersecting),
-      { rootMargin: "0px 0px -8px 0px" },
+      ([entry]) =>
+        setBarVisible(
+          !entry.isIntersecting && entry.boundingClientRect.top < 0,
+        ),
+      { threshold: 0 },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -145,14 +152,17 @@ export function PdpPurchase({
         );
       })}
 
-      {/* Inline add to bag (the primary buy affordance) */}
-      <CtaButton onClick={handleAdd} disabled={!canBuy} fullWidth>
-        {amount == null ? t("outOfStock") : buttonLabel}
-      </CtaButton>
+      {/* Inline add to bag (the primary buy affordance; observed for the bar) */}
+      <div id="tt-inline-cta" ref={inlineCtaRef}>
+        <CtaButton onClick={handleAdd} disabled={!canBuy} fullWidth>
+          {amount == null ? t("outOfStock") : buttonLabel}
+        </CtaButton>
+      </div>
 
       {/* Sticky glass buy bar: the second persistent glass pane on the PDP.
           Fades and rises in once the inline CTA is out of view. */}
       <div
+        id="tt-buy-bar"
         className={
           "pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-4 transition-[opacity,transform] duration-200 ease-out " +
           (showBar ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0")
