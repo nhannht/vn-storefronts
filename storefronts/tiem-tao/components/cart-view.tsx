@@ -6,6 +6,16 @@ import { useCart } from "./cart-provider";
 import { CtaLink } from "./cta-button";
 import { formatPrice } from "@/lib/format";
 
+// A bag with three products renders three identical steppers, so each stepper
+// names itself from its own hidden verb PLUS this line's product title:
+// aria-labelledby concatenates the elements it points at, which is the only way
+// to build "Increase quantity, iPhone 15 Pro" out of the verb-only keys the
+// catalogs carry. Ids are namespaced because the line id alone is not ours.
+const cartLineId = (
+  itemId: string,
+  part: "title" | "increase" | "decrease",
+) => `tt-cart-${itemId}-${part}`;
+
 export function CartView() {
   const t = useTranslations("cart");
   const { cart, setQuantity, removeItem, busy } = useCart();
@@ -48,7 +58,10 @@ export function CartView() {
             <div className="flex min-w-0 flex-1 flex-col">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-[var(--label-primary)]">
+                  <p
+                    id={cartLineId(item.id, "title")}
+                    className="truncate text-sm font-medium text-[var(--label-primary)]"
+                  >
                     {item.product_title ?? item.title}
                   </p>
                   {item.variant_title && (
@@ -69,24 +82,32 @@ export function CartView() {
                 <div className="inline-flex items-center rounded-[var(--radius-button)] border border-[var(--hairline)]">
                   <button
                     type="button"
-                    aria-label="-"
+                    aria-labelledby={`${cartLineId(item.id, "decrease")} ${cartLineId(item.id, "title")}`}
                     disabled={busy}
                     onClick={() => setQuantity(item.id, (item.quantity ?? 1) - 1)}
                     className="px-3 py-1.5 text-[var(--label-secondary)] disabled:opacity-50"
                   >
-                    -
+                    <span id={cartLineId(item.id, "decrease")} className="sr-only">
+                      {t("decrease")}
+                    </span>
+                    {/* The glyph is decoration once the button has a real name;
+                        left in the tree it is announced as bare punctuation. */}
+                    <span aria-hidden="true">-</span>
                   </button>
                   <span className="min-w-8 text-center text-sm text-[var(--label-primary)]">
                     {item.quantity}
                   </span>
                   <button
                     type="button"
-                    aria-label="+"
+                    aria-labelledby={`${cartLineId(item.id, "increase")} ${cartLineId(item.id, "title")}`}
                     disabled={busy}
                     onClick={() => setQuantity(item.id, (item.quantity ?? 1) + 1)}
                     className="px-3 py-1.5 text-[var(--label-secondary)] disabled:opacity-50"
                   >
-                    +
+                    <span id={cartLineId(item.id, "increase")} className="sr-only">
+                      {t("increase")}
+                    </span>
+                    <span aria-hidden="true">+</span>
                   </button>
                 </div>
                 <button
