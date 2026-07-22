@@ -4,8 +4,8 @@ import type { Locale } from "@/i18n/routing";
 import { getRegion } from "@/lib/region";
 import { listProducts } from "@/lib/medusa";
 import { ProductCard } from "@/components/product-card";
-import { OrbHero } from "@/components/orb-hero";
-import { SpecularCta } from "@/components/specular-cta";
+import { AmbientGlow } from "@/components/ambient-glow";
+import { CtaLink } from "@/components/cta-button";
 
 export default async function HomePage({
   params,
@@ -26,8 +26,8 @@ export default async function HomePage({
   return (
     <div className="mx-auto max-w-6xl px-6">
       <section className="relative flex flex-col items-center overflow-hidden py-24 text-center sm:py-32">
-        {/* Signature WebGL Orb behind the hero copy. */}
-        <OrbHero />
+        {/* Baked-noise gold ambient glow behind the hero copy. */}
+        <AmbientGlow />
         <p className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--accent)]">
           {t("eyebrow")}
         </p>
@@ -38,7 +38,7 @@ export default async function HomePage({
           {t("subtitle")}
         </p>
         <div className="mt-9">
-          <SpecularCta href="/products">{t("cta")}</SpecularCta>
+          <CtaLink href="/products">{t("cta")}</CtaLink>
         </div>
       </section>
 

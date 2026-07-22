@@ -31,6 +31,10 @@
   --accent-soft: rgba(228, 197, 126, 0.14);
   --cta-fill: #e4c57e;
   --cta-label: #1d1d1f;
+  /* Transient glass fill for a CTA on pointerdown (translucent gold). */
+  --cta-glass: rgba(228, 197, 126, 0.6);
+  /* Neutral drop shadow under floating glass (achromatic). */
+  --glass-shadow: rgba(0, 0, 0, 0.6);
 
   /* Glass (dark): translucent paper backing for the floating nav pill */
   --glass-bg: rgba(22, 22, 28, 0.55);
@@ -82,6 +86,8 @@
   --accent-soft: rgba(201, 162, 74, 0.16);
   --cta-fill: #c9a24a;
   --cta-label: #1d1d1f;
+  --cta-glass: rgba(201, 162, 74, 0.62);
+  --glass-shadow: rgba(0, 0, 0, 0.18);
 
   /* Glass (light) */
   --glass-bg: rgba(255, 255, 255, 0.6);
