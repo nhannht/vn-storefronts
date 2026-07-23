@@ -39,7 +39,7 @@ export default async function HomePage({
             section's box - cutting the bottom padding clips the falloff right
             at the CTA and squashes the glow into an ellipse. */}
         <section className="relative flex flex-col items-center overflow-hidden py-16 text-center sm:py-24">
-          {/* Baked-noise gold ambient glow behind the hero copy. */}
+          {/* Baked-noise cool-blue ambient glow behind the hero copy. */}
           <AmbientGlow />
           <p className="text-[0.8125rem] font-medium uppercase tracking-[0.08em] text-[var(--accent)]">
             {t("eyebrow")}

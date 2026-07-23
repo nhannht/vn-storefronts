@@ -3,8 +3,9 @@
   doubles as the no-attribute fallback). Light overrides live in the
   :root[data-theme="light"] block. color-scheme is declared here ONCE.
 
-  Verified accent hexes + WCAG ratios are in JOB-98 / the apple-web-design
-  skill. Route ALL text through the label ladder; ad-hoc grays lose the look.
+  Palette: Silver aluminum (light) + MacBook Air Midnight (dark), Apple-blue
+  accent. Verified WCAG ratios are in JOB-98. Route ALL text through the label
+  ladder; ad-hoc grays lose the look.
 */
 
 :root {
@@ -20,43 +21,43 @@
   --label-secondary: rgba(255, 255, 255, 0.55);
   --label-tertiary: rgba(255, 255, 255, 0.25);
 
-  /* Base + paper surfaces (dark) */
-  --base: #0b0b10;
-  --paper: #16161c;
+  /* Base + paper surfaces (dark, MacBook Air Midnight family) */
+  --base: #0c1220;
+  --paper: #161e2e;
   --hairline: rgba(255, 255, 255, 0.12);
   --hairline-strong: rgba(255, 255, 255, 0.2);
 
-  /* Champagne gold accent (dark): accent text + accent on near-black */
-  --accent: #e4c57e;
-  --accent-soft: rgba(228, 197, 126, 0.14);
-  --cta-fill: #e4c57e;
-  --cta-label: #1d1d1f;
-  /* Transient glass fill for a CTA on pointerdown (translucent gold). */
-  --cta-glass: rgba(228, 197, 126, 0.6);
+  /* Apple blue accent (dark): accent text on midnight base (5.2:1) */
+  --accent: #0a84ff;
+  --accent-soft: rgba(10, 132, 255, 0.14);
+  --cta-fill: #0071e3;
+  --cta-label: #ffffff;
+  /* Transient glass fill for a CTA on pointerdown (translucent blue). */
+  --cta-glass: rgba(10, 132, 255, 0.6);
   /* Neutral drop shadow under floating glass (achromatic). */
   --glass-shadow: rgba(0, 0, 0, 0.6);
 
-  /* Glass (dark): translucent paper backing for the floating nav pill */
-  --glass-bg: rgba(22, 22, 28, 0.55);
+  /* Glass (dark): translucent midnight backing for the floating nav pill */
+  --glass-bg: rgba(22, 28, 46, 0.55);
   --glass-border: rgba(255, 255, 255, 0.14);
   --glass-blur: 18px;
   --glass-saturate: 160%;
 
-  /* Vignette behind device photos on cards (dark) */
+  /* Vignette behind device photos on cards (dark, cool blue halo) */
   --vignette: radial-gradient(
     circle at 50% 42%,
-    rgba(228, 197, 126, 0.1),
+    rgba(76, 157, 245, 0.1),
     rgba(255, 255, 255, 0.02) 55%,
     transparent 72%
   );
 
   /* Layered page background (dark). Gradient lists do not interpolate, so a
      theme switch cuts these cleanly and only background-color/color tween. */
-  --bg-base: #0b0b10;
+  --bg-base: #0c1220;
   --bg-layers:
-    radial-gradient(1200px 800px at 50% -10%, rgba(228, 197, 126, 0.1), transparent 60%),
-    radial-gradient(1000px 900px at 15% 20%, rgba(40, 44, 74, 0.55), transparent 65%),
-    radial-gradient(1100px 1000px at 85% 80%, rgba(24, 26, 46, 0.55), transparent 65%);
+    radial-gradient(1200px 800px at 50% -10%, rgba(76, 157, 245, 0.12), transparent 60%),
+    radial-gradient(1000px 900px at 15% 20%, rgba(30, 44, 78, 0.55), transparent 65%),
+    radial-gradient(1100px 1000px at 85% 80%, rgba(18, 28, 52, 0.6), transparent 65%);
 
   /* Radii family */
   --radius-pill: 28px;
@@ -70,7 +71,7 @@
   --seg-knob-glass: rgba(255, 255, 255, 0.1);
 
   /* Focus ring */
-  --focus-ring: rgba(228, 197, 126, 0.7);
+  --focus-ring: rgba(74, 157, 245, 0.75);
 }
 
 :root[data-theme="light"] {
@@ -87,12 +88,12 @@
   --hairline: rgba(0, 0, 0, 0.1);
   --hairline-strong: rgba(0, 0, 0, 0.16);
 
-  /* Accent (light): bronze text/focus; bright gold reserved for fills */
-  --accent: #806326;
-  --accent-soft: rgba(201, 162, 74, 0.16);
-  --cta-fill: #c9a24a;
-  --cta-label: #1d1d1f;
-  --cta-glass: rgba(201, 162, 74, 0.62);
+  /* Accent (light): darkened Apple blue text/focus (5.1:1); blue CTA fill */
+  --accent: #0066cc;
+  --accent-soft: rgba(0, 113, 227, 0.1);
+  --cta-fill: #0071e3;
+  --cta-label: #ffffff;
+  --cta-glass: rgba(0, 113, 227, 0.55);
   --glass-shadow: rgba(0, 0, 0, 0.18);
 
   /* Glass (light) */
@@ -103,21 +104,21 @@
 
   --vignette: radial-gradient(
     circle at 50% 42%,
-    rgba(201, 162, 74, 0.1),
+    rgba(0, 113, 227, 0.06),
     rgba(0, 0, 0, 0.02) 55%,
     transparent 72%
   );
 
   --bg-base: #f5f5f7;
   --bg-layers:
-    radial-gradient(1200px 800px at 50% -10%, rgba(201, 162, 74, 0.1), transparent 60%),
-    radial-gradient(1000px 900px at 15% 20%, rgba(240, 235, 228, 0.9), transparent 65%),
-    radial-gradient(1100px 1000px at 85% 80%, rgba(245, 240, 232, 0.9), transparent 65%);
+    radial-gradient(1200px 800px at 50% -10%, rgba(0, 113, 227, 0.06), transparent 60%),
+    radial-gradient(1000px 900px at 15% 20%, rgba(228, 231, 236, 0.9), transparent 65%),
+    radial-gradient(1100px 1000px at 85% 80%, rgba(233, 236, 240, 0.9), transparent 65%);
 
   /* Segmented control (light) */
   --seg-track: rgba(0, 0, 0, 0.05);
   --seg-knob: #ffffff;
   --seg-knob-glass: rgba(255, 255, 255, 0.6);
 
-  --focus-ring: rgba(128, 99, 38, 0.7);
+  --focus-ring: rgba(0, 102, 204, 0.7);
 }

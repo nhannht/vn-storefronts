@@ -12,12 +12,12 @@ import "./product-card.css";
 
 const INSTALLMENT_MONTHS = 12;
 
-// Gold-only hover glow. BorderGlow parses these in JS (glow + mesh math), so
+// Blue-only hover glow. BorderGlow parses these in JS (glow + mesh math), so
 // they cannot read CSS vars: keep them mirrored on tokens.css --accent /
-// --cta-fill. The mesh trio is all gold/bronze so the hover never shows the
+// --cta-fill. The mesh trio is all blue so the hover never shows the
 // component's default multi-hue border.
-const GOLD_GLOW = "42 65 69"; // #E4C57E as "H S L"
-const GOLD_MESH = ["#E4C57E", "#C9A24A", "#B8863B"];
+const ACCENT_GLOW = "211 90 63"; // #4C9DF5 as "H S L"
+const ACCENT_MESH = ["#4C9DF5", "#0071E3", "#0A5BB8"];
 
 // Paper product card per the locked anatomy: 1:1 media with a per-theme vignette
 // placeholder, then eyebrow / name / price / installment-hint. The whole card is
@@ -40,8 +40,8 @@ export function ProductCard({ product }: { product: HttpTypes.StoreProduct }) {
     >
       <BorderGlow
         className="tt-card"
-        glowColor={GOLD_GLOW}
-        colors={GOLD_MESH}
+        glowColor={ACCENT_GLOW}
+        colors={ACCENT_MESH}
         backgroundColor="var(--paper)"
         borderRadius={26}
         glowRadius={32}

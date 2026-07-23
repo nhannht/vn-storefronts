@@ -61,8 +61,8 @@ const MESSAGES: Record<Locale, typeof viMessages> = {
   en: enMessages,
 };
 
-// The locked primary-CTA contract from components/cta-button.tsx - gold fill,
-// near-black label, radius 18, semibold - restated as a static anchor. CtaLink
+// The locked primary-CTA contract from components/cta-button.tsx - blue fill,
+// white label, radius 18, semibold - restated as a static anchor. CtaLink
 // itself is unusable here twice over: it is a client component, and its Link
 // resolves hrefs against a request locale this document does not have. The press
 // affordance survives as :active rather than pointer handlers, so this document

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { Renderer, Program, Mesh, Triangle, RenderTarget, Vec3 } from "ogl";
 import { useTheme } from "./theme-provider";
 
-// Single-hue (champagne gold) ambient glow, DARK THEME ONLY (director amendment
+// Single-hue (cool steel blue) ambient glow, DARK THEME ONLY (director amendment
 // 2026-07-22: light theme uses the tokens.css light radial recipe alone, no
 // WebGL). Noise is BAKED once into a texture; the per-frame shader does two
 // texture taps plus analytic radial falloff, so it holds the budget.
@@ -39,7 +39,7 @@ const drawFrag = /* glsl */ `
   precision highp float;
   uniform sampler2D tNoise;
   uniform float iTime;
-  uniform vec3 gold;
+  uniform vec3 tint;
   uniform float uPeak;     // overall intensity
   uniform float uFalloff;  // radius where the glow fades out
   uniform vec2 uCenter;    // glow center (lifted up on phones)
@@ -54,7 +54,7 @@ const drawFrag = /* glsl */ `
     float churn = 0.5 + 0.5 * mix(n1, n2, 0.5);
     float glow = pow(smoothstep(uFalloff, 0.02, d), 1.9);
     float a = glow * churn * uPeak;
-    gl_FragColor = vec4(gold * a, a); // premultiplied
+    gl_FragColor = vec4(tint * a, a); // premultiplied
   }
 `;
 
@@ -81,9 +81,9 @@ export function AmbientGlow() {
     gl.clearColor(0, 0, 0, 0);
     el.appendChild(gl.canvas);
 
-    // Gold uniform is JS-parsed for WebGL (dark --accent). One mirrored literal;
-    // keep in sync with tokens.css --accent.
-    const gold = [0.894, 0.773, 0.494];
+    // Tint uniform is JS-parsed for WebGL (cannot read a CSS var). One mirrored
+    // literal; keep in sync with tokens.css dark --accent family.
+    const tint = [0.298, 0.616, 0.961]; // #4C9DF5
 
     const geometry = new Triangle(gl);
 
@@ -100,7 +100,7 @@ export function AmbientGlow() {
       uniforms: {
         tNoise: { value: target.texture },
         iTime: { value: 0 },
-        gold: { value: new Vec3(gold[0], gold[1], gold[2]) },
+        tint: { value: new Vec3(tint[0], tint[1], tint[2]) },
         uPeak: { value: DESKTOP.peak },
         uFalloff: { value: DESKTOP.falloff },
         uCenter: { value: [0.5, DESKTOP.cy] },

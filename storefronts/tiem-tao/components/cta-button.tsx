@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 
-// Locked primary-CTA contract: gold FILL (--cta-fill), near-black label
-// (--cta-label, 10.1:1), radius 18, semibold. Transient glass ONLY on
+// Locked primary-CTA contract: blue FILL (--cta-fill), white label
+// (--cta-label, 4.7:1), radius 18, semibold. Transient glass ONLY on
 // pointerdown (paper->glass while held, per the materials rule).
 
-// No outline reset here: the shared CTA takes the global :focus-visible gold
+// No outline reset here: the shared CTA takes the global :focus-visible blue
 // ring from globals.css like every other control.
 const BASE =
   "inline-flex items-center justify-center rounded-[18px] text-sm font-semibold text-[var(--cta-label)] transition-[transform,background-color] duration-150 disabled:opacity-45 disabled:pointer-events-none";

@@ -9,7 +9,7 @@ import { categoryHref, type CatalogCategory } from "@/lib/product-view";
 // anchored. Same materials, different proportion, so the eye reads a second
 // object rather than a second grid. There is no photography and no per-category
 // copy in the catalogs, so the tile earns its presence from material (the same
-// gold vignette the card media wells use) instead of inventing content.
+// cool vignette the card media wells use) instead of inventing content.
 //
 // Each tile is a real link carrying the filter in the URL, so the listing lands
 // already filtered instead of dumping the reader on the full catalog.
@@ -37,7 +37,7 @@ export async function CategoryStrip({
             key={category.handle}
             href={categoryHref(category.handle)}
             style={{ backgroundImage: "var(--vignette)" }}
-            // Hover is the card contract: spring scale to 1.02 plus a gold
+            // Hover is the card contract: spring scale to 1.02 plus a blue
             // border glow, nothing else. Paper, never glass - the nav pill is
             // the only persistent glass pane on this page.
             className="flex min-h-[112px] flex-col justify-end rounded-[var(--radius-card)] border border-[var(--hairline)] bg-[var(--paper)] p-6 transition-[transform,border-color,box-shadow] duration-[320ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.02] hover:border-[var(--accent)] hover:shadow-[0_0_32px_-4px_var(--accent-soft)] md:min-h-[160px]"
