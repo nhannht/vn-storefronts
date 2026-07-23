@@ -1,0 +1,61 @@
+/*
+  The paper book card. All material lives here - opaque paper, a 1px hairline
+  border, a soft token shadow - so the JSX carries only structure. No glass, no
+  backdrop-filter, no WebGL: mot is paper at rest.
+*/
+
+/* Whole card is one link; hover springs the card to <=1.02 (overshoot ease),
+   killed by prefers-reduced-motion via globals.css. Full height so grid rows
+   align even when titles wrap to different depths. */
+.mot-card-link {
+  display: block;
+  height: 100%;
+  transform: translateZ(0);
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mot-card-link:hover {
+  transform: scale(1.02);
+}
+
+.mot-card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color 320ms ease,
+    box-shadow 320ms ease;
+}
+
+.mot-card-link:hover .mot-card {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* The cover itself (the typographic panel) lives in components/book-cover.css,
+   shared with the PDP. */
+
+/* The paper foot below the cover: the "from" price in running-UI sans. */
+.mot-card-foot {
+  padding: 0.875rem 1.25rem 1.125rem;
+}
+
+.mot-card-price {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.mot-card-from {
+  font-weight: 400;
+  color: var(--label-tertiary);
+}
+
+.mot-card-amount {
+  color: var(--label-primary);
+}
