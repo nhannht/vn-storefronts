@@ -1,0 +1,70 @@
+/*
+  The edition picker's segmented control - mot's ONLY glass surface. Equal-width
+  segments; the knob is placed by CSS calc from --i (active index) / --n (segment
+  count), so no JS measurement and it stays correct on resize.
+
+  The knob is paper (--seg-knob) at rest. While it slides to the selected segment
+  it flashes translucent (--seg-knob-glass) with a backdrop blur - transient
+  glass, bounded by the gesture, so it costs nothing per frame. Everything else
+  in mot is opaque paper; this is the single sanctioned glass touch.
+
+  The glass rule is gated on prefers-reduced-motion: no-preference. Under reduced
+  motion the knob transition is killed (globals.css), so onTransitionEnd never
+  fires and `sliding` could stay true - the gate makes sure that a stuck flag can
+  never leave the knob in persistent glass. Reduced motion = solid knob, always.
+*/
+.mot-seg {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  padding: 4px;
+  border-radius: var(--radius-button);
+  background: var(--seg-track);
+  border: 1px solid var(--hairline);
+}
+
+.mot-seg-knob {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: calc(4px + var(--i) * (100% - 8px) / var(--n));
+  width: calc((100% - 8px) / var(--n));
+  border-radius: calc(var(--radius-button) - 4px);
+  background: var(--seg-knob);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
+  z-index: 0;
+  transition:
+    left 300ms cubic-bezier(0.34, 1.42, 0.64, 1),
+    transform 300ms ease,
+    background-color 220ms ease;
+}
+
+/* Transient glass while sliding - gated so it never becomes persistent under
+   reduced motion (where transitionend never fires and `sliding` can stick). */
+@media (prefers-reduced-motion: no-preference) {
+  .mot-seg-knob--sliding {
+    background: var(--seg-knob-glass);
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    transform: scale(1.05);
+  }
+}
+
+.mot-seg-btn {
+  position: relative;
+  z-index: 1;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--label-secondary);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.mot-seg-btn[aria-checked="true"] {
+  color: var(--label-primary);
+}
