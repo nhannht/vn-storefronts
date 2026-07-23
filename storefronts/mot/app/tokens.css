@@ -1,0 +1,123 @@
+/*
+  mot design tokens. mot is a LIGHT-first paper store - the INVERSE of tiem-tao.
+  Light is the default theme and lives in :root (which doubles as the
+  no-attribute fallback). Night overrides live in the :root[data-theme="dark"]
+  block. color-scheme is declared per block. Fonts and radii live in :root only;
+  the night block repeats only what changes.
+
+  Palette: sage on paper (light) + deep sage on ink (night). Route ALL text
+  through the label ladder; ad-hoc grays lose the look.
+*/
+
+:root {
+  color-scheme: light;
+
+  /* Font stacks: SF on Apple devices (system), Inter (with Vietnamese
+     diacritics) for sans and Lora for serif, both loaded via next/font. Never
+     ship SF Pro files. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", "Segoe UI", var(--font-inter), Inter, Roboto, sans-serif;
+  --font-serif: ui-serif, "New York", var(--font-lora), "Lora", Georgia,
+    "Times New Roman", serif;
+
+  /* Label ladder (light) */
+  --label-primary: #1B1E1A;
+  --label-secondary: rgba(27, 30, 26, 0.62);
+  --label-tertiary: rgba(27, 30, 26, 0.34);
+
+  /* Base + paper surfaces (light) */
+  --base: #F3F4EE;
+  --paper: #FCFCF8;
+  --hairline: rgba(27, 40, 20, 0.12);
+  --hairline-strong: rgba(27, 40, 20, 0.20);
+
+  /* Sage accent (light) */
+  --accent: #4E6047;
+  --accent-strong: #3E4E39;
+  --accent-soft: rgba(78, 96, 71, 0.10);
+  --cta-fill: #4E6047;
+  --cta-label: #ffffff;
+  --sage-pastel: #C6D0BC;
+
+  /* Edition-picker segmented control (light). The track is a soft sage inset on
+     paper; the knob is paper at rest and flashes translucent ONLY while it slides
+     - mot's single glass touch. --seg-knob-glass is that transient blur tint,
+     gated on prefers-reduced-motion in segmented-control.css. */
+  --seg-track: rgba(27, 40, 20, 0.06);
+  --seg-knob: #FCFCF8;
+  --seg-knob-glass: rgba(252, 252, 248, 0.55);
+
+  /* Focus ring */
+  --focus-ring: rgba(78, 96, 71, 0.70);
+
+  /* Radii family */
+  --radius-pill: 28px;
+  --radius-card: 26px;
+  --radius-button: 18px;
+
+  /* Book-cover tints (light). mot has no cover photography, so a card's cover is
+     a typographic panel washed in one of a small calm palette - muted sage,
+     warm linen, soft stone. Theme-aware because a fixed hex would glow wrong on
+     the night page; the card assigns one by render index for guaranteed spread. */
+  --cover-1: #C9D3BE;
+  --cover-2: #E7DCC9;
+  --cover-3: #CBD4CF;
+
+  /* Soft paper shadow for the opaque cards and doors (light). */
+  --shadow-card: 0 1px 2px rgba(27, 30, 26, 0.05),
+    0 14px 30px -20px rgba(27, 30, 26, 0.22);
+  --shadow-card-hover: 0 1px 2px rgba(27, 30, 26, 0.06),
+    0 22px 44px -22px rgba(78, 96, 71, 0.30);
+
+  /* Layered page background (light). Gradient lists do not interpolate, so a
+     theme switch cuts these cleanly and only background-color/color tween. */
+  --bg-base: #F3F4EE;
+  --bg-layers: radial-gradient(1100px 700px at 50% -8%, rgba(78, 96, 71, 0.06), transparent 60%);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Label ladder (night) */
+  --label-primary: #F4F5EF;
+  --label-secondary: rgba(244, 245, 239, 0.60);
+  --label-tertiary: rgba(244, 245, 239, 0.30);
+
+  /* Base + paper surfaces (night) */
+  --base: #14170F;
+  --paper: #1C2016;
+  --hairline: rgba(255, 255, 255, 0.12);
+  --hairline-strong: rgba(255, 255, 255, 0.20);
+
+  /* Sage accent (night) */
+  --accent: #A9BE97;
+  --accent-strong: #B9CCA8;
+  --accent-soft: rgba(169, 190, 151, 0.14);
+  --cta-fill: #6E8060;
+  --cta-label: #14170F;
+  --sage-pastel: #3A452F;
+
+  /* Edition-picker segmented control (night): the light tints dropped onto ink -
+     a faint white inset track and a lifted paper knob. */
+  --seg-track: rgba(255, 255, 255, 0.05);
+  --seg-knob: #2A2F22;
+  --seg-knob-glass: rgba(42, 47, 34, 0.52);
+
+  --focus-ring: rgba(169, 190, 151, 0.70);
+
+  /* Book-cover tints (night): deep sage, warm bark, cool slate - the light
+     tints dropped onto ink so the cream title reads without glare. */
+  --cover-1: #333E28;
+  --cover-2: #3C3627;
+  --cover-3: #2C3833;
+
+  /* Soft shadow on ink (night): deeper drop, the border carries more of the
+     edge than the shadow does on a dark page. */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.30),
+    0 14px 30px -18px rgba(0, 0, 0, 0.55);
+  --shadow-card-hover: 0 1px 2px rgba(0, 0, 0, 0.34),
+    0 22px 44px -20px rgba(0, 0, 0, 0.62);
+
+  --bg-base: #14170F;
+  --bg-layers: radial-gradient(1100px 700px at 50% -8%, rgba(169, 190, 151, 0.06), transparent 60%);
+}
