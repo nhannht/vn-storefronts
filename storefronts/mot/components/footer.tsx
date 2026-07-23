@@ -1,0 +1,61 @@
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+
+// Paper rest: the footer sits flat on the page, never glass. Inter throughout
+// (the serif is reserved for the wordmark and display headings).
+export async function Footer() {
+  const t = await getTranslations("footer");
+  const brand = await getTranslations("brand");
+  const nav = await getTranslations("nav");
+
+  return (
+    <footer className="mt-24 border-t border-[var(--hairline)]">
+      <div className="mx-auto grid max-w-[1200px] gap-10 px-4 py-14 sm:grid-cols-2 sm:px-6 md:grid-cols-3">
+        <div className="max-w-xs">
+          <p className="text-lg font-semibold tracking-tight text-[var(--label-primary)]">
+            {brand("name")}
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-[var(--label-secondary)]">
+            {brand("disclaimer")}
+          </p>
+        </div>
+
+        <nav aria-label={t("shop")} className="flex flex-col gap-2.5 text-sm">
+          <p className="text-[0.8125rem] font-medium uppercase tracking-[0.08em] text-[var(--label-tertiary)]">
+            {t("shop")}
+          </p>
+          <Link
+            href="/products"
+            className="text-[var(--label-secondary)] transition-colors duration-200 hover:text-[var(--label-primary)]"
+          >
+            {nav("products")}
+          </Link>
+          <Link
+            href="/cart"
+            className="text-[var(--label-secondary)] transition-colors duration-200 hover:text-[var(--label-primary)]"
+          >
+            {nav("cart")}
+          </Link>
+        </nav>
+
+        <nav aria-label={t("info")} className="flex flex-col gap-2.5 text-sm">
+          <p className="text-[0.8125rem] font-medium uppercase tracking-[0.08em] text-[var(--label-tertiary)]">
+            {t("info")}
+          </p>
+          <Link
+            href="/"
+            className="text-[var(--label-secondary)] transition-colors duration-200 hover:text-[var(--label-primary)]"
+          >
+            {t("about")}
+          </Link>
+          <span className="text-[var(--label-secondary)]">{t("warranty")}</span>
+          <span className="text-[var(--label-secondary)]">{t("support")}</span>
+        </nav>
+      </div>
+
+      <div className="mx-auto max-w-[1200px] px-4 pb-10 sm:px-6">
+        <p className="text-xs text-[var(--label-tertiary)]">{t("rights")}</p>
+      </div>
+    </footer>
+  );
+}
