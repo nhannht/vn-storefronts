@@ -1,0 +1,119 @@
+{
+  "brand": {
+    "name": "Mọt",
+    "disclaimer": "Portfolio demo. Public-domain works only."
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Books",
+    "cart": "Cart",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleTheme": "Toggle light and dark",
+    "language": "Language",
+    "booksCard": "Books",
+    "allBooks": "All books",
+    "featured": "Featured",
+    "authorsCard": "Authors",
+    "booksByAuthor": "Books by {name}",
+    "aboutCard": "About",
+    "about": "Introduction",
+    "publicDomain": "Public domain"
+  },
+  "home": {
+    "eyebrow": "Public-domain classics",
+    "title": "Timeless books, beautifully set.",
+    "subtitle": "A small library of public-domain works, typeset for a slow read.",
+    "cta": "Enter the library",
+    "featuredTitle": "Featured",
+    "featuredSubtitle": "A few of the most-read titles at Mọt.",
+    "categoriesTitle": "Genres",
+    "categoriesSubtitle": "Browse by genre.",
+    "authorsTitle": "Authors",
+    "authorsSubtitle": "Browse by author.",
+    "viewAll": "View all"
+  },
+  "products": {
+    "title": "All books",
+    "subtitle": "Public-domain works, free to read.",
+    "empty": "No books yet.",
+    "from": "from",
+    "perMonth": "from {amount}",
+    "allCategories": "All"
+  },
+  "pdp": {
+    "addToCart": "Add to cart",
+    "adding": "Adding...",
+    "added": "Added",
+    "outOfStock": "Out of stock",
+    "selectEdition": "Select an edition",
+    "sampleTitle": "Read a sample",
+    "editionLabel": "Edition",
+    "editionName": "{binding} edition",
+    "binding": "Binding",
+    "weight": "Weight",
+    "weightValue": "{value} g",
+    "softcover": "Softcover",
+    "hardcover": "Hardcover"
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty.",
+    "continue": "Keep browsing",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "increase": "Increase quantity",
+    "decrease": "Decrease quantity"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "contact": "Contact information",
+    "email": "Email",
+    "shipping": "Shipping address",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "address": "Address",
+    "city": "City",
+    "phone": "Phone",
+    "payment": "Payment method",
+    "cod": "Cash on delivery (COD)",
+    "card": "Card (Stripe test)",
+    "placeOrder": "Place order",
+    "placing": "Processing...",
+    "summary": "Order summary",
+    "shippingMethod": "Shipping method",
+    "subtotal": "Subtotal",
+    "shippingFee": "Shipping",
+    "shippingPending": "Shipping is calculated when you place the order.",
+    "total": "Total",
+    "stripeBlocked": "Card payment is pending the administrator's Stripe test key."
+  },
+  "order": {
+    "confirmedTitle": "Order confirmed",
+    "thanks": "Thank you for reading with Mọt.",
+    "orderId": "Order ID",
+    "email": "Email",
+    "total": "Total",
+    "backHome": "Back to home"
+  },
+  "footer": {
+    "shop": "Books",
+    "info": "Information",
+    "about": "About Mọt",
+    "support": "Support",
+    "warranty": "Rights",
+    "rights": "A non-commercial portfolio demo."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you are looking for does not exist or has moved.",
+    "browse": "Browse books",
+    "back": "Back to home"
+  },
+  "common": {
+    "loading": "Loading...",
+    "notFound": "Content not found."
+  }
+}

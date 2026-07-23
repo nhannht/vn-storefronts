@@ -1,0 +1,119 @@
+{
+  "brand": {
+    "name": "Mọt",
+    "disclaimer": "Bản demo trong hồ sơ năng lực. Chỉ gồm tác phẩm thuộc phạm vi công cộng."
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "products": "Tủ sách",
+    "cart": "Giỏ hàng",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
+    "toggleTheme": "Đổi giao diện sáng tối",
+    "language": "Ngôn ngữ",
+    "booksCard": "Tủ sách",
+    "allBooks": "Tất cả sách",
+    "featured": "Nổi bật",
+    "authorsCard": "Tác giả",
+    "booksByAuthor": "Sách của {name}",
+    "aboutCard": "Về Mọt",
+    "about": "Giới thiệu",
+    "publicDomain": "Tác phẩm công cộng"
+  },
+  "home": {
+    "eyebrow": "Kinh điển công cộng",
+    "title": "Những trang sách kinh điển, bày lại thật đẹp.",
+    "subtitle": "Tủ sách nhỏ gồm tác phẩm thuộc phạm vi công cộng, dàn trang để đọc thong thả.",
+    "cta": "Vào tủ sách",
+    "featuredTitle": "Nổi bật",
+    "featuredSubtitle": "Vài tựa sách được đọc nhiều nhất ở Mọt.",
+    "categoriesTitle": "Thể loại",
+    "categoriesSubtitle": "Chọn theo thể loại.",
+    "authorsTitle": "Tác giả",
+    "authorsSubtitle": "Chọn sách theo tác giả.",
+    "viewAll": "Xem tất cả"
+  },
+  "products": {
+    "title": "Tất cả sách",
+    "subtitle": "Tác phẩm thuộc phạm vi công cộng, đọc miễn phí.",
+    "empty": "Chưa có cuốn sách nào.",
+    "from": "từ",
+    "perMonth": "từ {amount}",
+    "allCategories": "Tất cả"
+  },
+  "pdp": {
+    "addToCart": "Thêm vào giỏ",
+    "adding": "Đang thêm...",
+    "added": "Đã thêm",
+    "outOfStock": "Tạm hết",
+    "selectEdition": "Chọn ấn bản",
+    "sampleTitle": "Đọc thử",
+    "editionLabel": "Ấn bản",
+    "editionName": "Bản {binding}",
+    "binding": "Bìa",
+    "weight": "Trọng lượng",
+    "weightValue": "{value} g",
+    "softcover": "Bìa mềm",
+    "hardcover": "Bìa cứng"
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "empty": "Giỏ hàng của bạn đang trống.",
+    "continue": "Tiếp tục xem sách",
+    "subtotal": "Tạm tính",
+    "checkout": "Thanh toán",
+    "remove": "Xoá",
+    "quantity": "Số lượng",
+    "increase": "Tăng số lượng",
+    "decrease": "Giảm số lượng"
+  },
+  "checkout": {
+    "title": "Thanh toán",
+    "contact": "Thông tin liên hệ",
+    "email": "Email",
+    "shipping": "Địa chỉ giao hàng",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "address": "Địa chỉ",
+    "city": "Thành phố",
+    "phone": "Số điện thoại",
+    "payment": "Phương thức thanh toán",
+    "cod": "Thanh toán khi nhận hàng (COD)",
+    "card": "Thẻ (Stripe thử nghiệm)",
+    "placeOrder": "Đặt hàng",
+    "placing": "Đang xử lý...",
+    "summary": "Đơn hàng",
+    "shippingMethod": "Phương thức vận chuyển",
+    "subtotal": "Tạm tính",
+    "shippingFee": "Phí vận chuyển",
+    "shippingPending": "Phí vận chuyển được tính khi bạn đặt hàng.",
+    "total": "Tổng cộng",
+    "stripeBlocked": "Thanh toán thẻ đang chờ khoá thử nghiệm Stripe của quản trị viên."
+  },
+  "order": {
+    "confirmedTitle": "Đặt hàng thành công",
+    "thanks": "Cảm ơn bạn đã đọc sách cùng Mọt.",
+    "orderId": "Mã đơn hàng",
+    "email": "Email",
+    "total": "Tổng cộng",
+    "backHome": "Về trang chủ"
+  },
+  "footer": {
+    "shop": "Tủ sách",
+    "info": "Thông tin",
+    "about": "Về Mọt",
+    "support": "Hỗ trợ",
+    "warranty": "Bản quyền",
+    "rights": "Dự án minh hoạ, phi thương mại."
+  },
+  "notFound": {
+    "title": "Không tìm thấy trang",
+    "body": "Trang bạn tìm không tồn tại hoặc đã được chuyển đi.",
+    "browse": "Xem tủ sách",
+    "back": "Về trang chủ"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "notFound": "Không tìm thấy nội dung."
+  }
+}
