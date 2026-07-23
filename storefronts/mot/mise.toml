@@ -1,0 +1,4 @@
+# Pin Node to a supported LTS. The Next.js starter supports Node 20-24; the dev
+# machine may run a newer Node. Matches the backend pin (repo-wide Node 24).
+[tools]
+node = "24"
